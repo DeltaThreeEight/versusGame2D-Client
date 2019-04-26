@@ -11,7 +11,6 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
-import java.util.concurrent.Exchanger;
 
 public class ClientCommandHandler {
 
@@ -21,7 +20,6 @@ public class ClientCommandHandler {
     public static ClientCommandHandler dH;
     public static MainWindow mainWindow;
 
-    private Exchanger<String> exchanger;
     private ObjectOutputStream writer;
     private ObjectInputStream reader;
     private Scanner scanner;
@@ -29,10 +27,9 @@ public class ClientCommandHandler {
     static boolean isSendingToken = false;
     private static boolean isAuth = false;
 
-    public ClientCommandHandler(ObjectOutputStream writer, ObjectInputStream reader, Exchanger<String> ex) {
+    public ClientCommandHandler(ObjectOutputStream writer, ObjectInputStream reader) {
         this.writer = writer;
         this.reader = reader;
-        exchanger = ex;
         this.scanner = new Scanner(System.in);
         helpUnauthrozied();
         dH = this;
@@ -240,10 +237,6 @@ public class ClientCommandHandler {
            return scanner.nextLine();
     }
 
-    public Exchanger<String> getExchanger() {
-        return exchanger;
-    }
-
     public void sendToServer(String str) {
         try {
             writer.writeUTF(str);
@@ -251,6 +244,13 @@ public class ClientCommandHandler {
         } catch (IOException e) {
             System.out.println("Невозможно отравить запрос серверу.");
         }
+    }
+
+    public void deauth() {
+        ClientCommandHandler.setIsAuth(false);
+        ClientCommandHandler.playerClient = null;
+        ClientCommandHandler.joinedPlayers.clear();
+        sendToServer("deauth null$"+authToken);
     }
 
     public static void setIsAuth(boolean a) {

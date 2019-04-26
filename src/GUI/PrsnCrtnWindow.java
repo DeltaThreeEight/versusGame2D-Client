@@ -22,7 +22,7 @@ public class PrsnCrtnWindow {
             Button create = new Button("Создать");
             create.setOnAction(event -> {
                 if (name.getText().trim().equals("")) {
-                    RegistrationWindow.showAlert("Не введено имя персонажа");
+                    Main.showAlert("Не введено имя персонажа");
                     return;
                 }
                 RadioButton sel = (RadioButton) group.getSelectedToggle();
@@ -31,7 +31,7 @@ public class PrsnCrtnWindow {
                 } else if (sel != null)
                     ClientCommandHandler.dH.executeCommand("createnew "+name.getText().replaceAll("\\s+","")+ " Spy");
                 if (sel != null) instance.hide();
-                    else RegistrationWindow.showAlert("Не выбрана сторона");
+                    else Main.showAlert("Не выбрана сторона");
             });
             FlowPane flow = new FlowPane(Orientation.VERTICAL, name, spyBtn, mercBtn, create);
             instance = new Stage();
