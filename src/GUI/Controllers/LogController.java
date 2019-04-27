@@ -2,6 +2,7 @@ package GUI.Controllers;
 
 import GUI.Main;
 import ServerCon.ClientCommandHandler;
+import Server.Command;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -33,8 +34,7 @@ public class LogController {
             Main.showAlert("Введите логин");
             return;
         }
-        String hash = ClientCommandHandler.getHash(pass.getText());
-        ClientCommandHandler.dH.sendToServer(String.format("login %s %s", login.getText(), hash));
+        ClientCommandHandler.dH.sendCMD(new Command("login", login.getText(), pass.getText()));
     }
 
     public void localize() {

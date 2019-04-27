@@ -2,14 +2,13 @@ package GUI.Controllers;
 
 import GUI.Main;
 import ServerCon.ClientCommandHandler;
+import Server.Command;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.ResourceBundle;
 
 
@@ -52,8 +51,7 @@ public class RegController {
             Main.showAlert("Минимальная длина пароля - 6 символов!");
             return;
         }
-        String hash = ClientCommandHandler.getHash(pass.getText());
-        ClientCommandHandler.dH.sendToServer(String.format("register %s %s %s", login.getText(), email.getText(), hash));
+        ClientCommandHandler.dH.sendCMD(new Command("register", login.getText(), email.getText(), pass.getText()));
     }
 
     public void localize() {

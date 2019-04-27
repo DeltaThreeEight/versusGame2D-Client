@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="175.0" prefWidth="314.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controllers.TokenController">
+   <children>
+      <TextField fx:id="token_field" layoutX="24.0" layoutY="57.0" promptText="reg token" />
+      <Label fx:id="token_lbl" layoutX="24.0" layoutY="25.0" prefHeight="21.0" prefWidth="170.0" text="Input Registration Token" />
+      <Button fx:id="token_btn" layoutX="24.0" layoutY="105.0" mnemonicParsing="false" text="Enter" onAction="#continReg"/>
+   </children>
+</AnchorPane>

@@ -1,16 +1,13 @@
 package ServerCon;
 
-import Entities.*;
-import Entities.exceptions.NotAliveException;
+import Entities.Human;
 import GUI.MainWindow;
-import com.lambdaworks.codec.Base64;
-import com.lambdaworks.crypto.SCrypt;
-import com.lambdaworks.crypto.SCryptUtil;
+import Server.Command;
+import javafx.stage.Stage;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.HashMap;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
 
 public class ClientCommandHandler {
 
@@ -19,264 +16,67 @@ public class ClientCommandHandler {
     static String authToken = null;
     public static ClientCommandHandler dH;
     public static MainWindow mainWindow;
-
+    private Stage token_window;
     private ObjectOutputStream writer;
-    private ObjectInputStream reader;
-    private Scanner scanner;
-    private Console console = System.console();
-    static boolean isSendingToken = false;
     private static boolean isAuth = false;
 
-    public ClientCommandHandler(ObjectOutputStream writer, ObjectInputStream reader) {
+    public ClientCommandHandler(ObjectOutputStream writer) {
         this.writer = writer;
-        this.reader = reader;
-        this.scanner = new Scanner(System.in);
-        helpUnauthrozied();
         dH = this;
     }
 
-    class Command {
-        String name;
-        String arguments = null;
 
-        public Command(String str) {
-            String[] parts = str.split(" ");
-            name = parts[0];
-            if (parts.length > 1) arguments = str.replaceFirst(parts[0]+" ", "");
-        }
+    public Stage getToken_window() {
+        return token_window;
+    }
 
-        public String allCmd() {
-            if (arguments != null)
-            return name + " " + arguments;
-            else return name;
-        }
-        public void setSafe() {
-            name = name.replaceAll("\\$", "");
-            if (arguments != null) arguments = arguments.replaceAll("\\$", "");
-        }
+    public void setToken_window(Stage token_window) {
+        this.token_window = token_window;
     }
 
     public static boolean getIsAuth() {
         return isAuth;
     }
 
-    public boolean executeCommand(String cmd) {
+    public boolean executeCommand(Command cmd) {
         try {
-            Command command = new Command(cmd);
-            command.setSafe();
-
-            if (isAuth) {
-                command.arguments = command.arguments + "$" + authToken;
-                switch (command.name) {
-                    case "help":
-                        sendToServer(command.allCmd());
-                        break;
-                    case "register":
-                        System.out.println("Вы уже авторизованы!");
-                        break;
-                    case "login":
-                        System.out.println("Вы уже авторизованы!");
-                        break;
-                    case "chat":
-                            if (command.arguments == null)
-                                System.out.println("Отсутсвуют аргументы\n" +
-                                        "Введите команду");
-                            else
-                                sendToServer(command.allCmd());
-                        break;
-                    case "select":
-                        if (command.arguments == null)
-                            System.out.println("Отсутвует аргумент\n" +
-                                    "Введите команду");
-                        else {
-                            sendToServer(command.allCmd());
-                        }
-                        break;
-                    case "showstats":
-                        sendToServer(command.allCmd());
-                        break;
-                    case "remove":
-                        if (command.arguments == null)
-                            System.out.println("Отсутвует аргумент\n" +
-                                    "Введите команду");
-                        else {
-                            sendToServer(command.allCmd());
-                        }
-                        break;
-                    case "createnew":
-                        String parts[] = command.arguments.replace("$"+authToken, "").split(" ");
-                        switch (parts[1]) {
-                            case "Spy":
-                                Spy spy = new Spy(parts[0]);
-                                sendToServer("createnew "+parts[0]+"$"+ authToken);
-                                sendObject(spy);
-                                break;
-                            case "Merc":
-                                Merc merc = new Merc(parts[0]);
-                                sendToServer("createnew "+parts[0]+"$"+ authToken);
-                                sendObject(merc);
-                                break;
-                        }
-                        break;
-                    case "move":
-                        if (command.arguments.replace("$"+ authToken, "").equals(""))
-                            System.out.println("Отсутсвует аргумент");
-                        else {
-                            if (playerClient != null) {
-                                Moves move = null;
-                                try {
-                                    move = Moves.valueOf(command.arguments.replace("$"+ authToken, "").toUpperCase());
-                                } catch (Exception e) {
-                                }
-                                if (move != null) {
-                                    try {
-                                        playerClient.move(move);
-                                        sendToServer(command.allCmd());
-                                    } catch (NotAliveException e) {
-                                        System.out.println(e.getMessage());
-                                    }
-                                } else
-                                    System.out.println("Неверно указано направление движения");
-                            } else System.out.println("Не выбран персонаж");
-                        }
-                        break;
-                    case "exit":
-                        sendToServer(command.allCmd());
-                        return true;
-                    default:
-                        sendToServer(command.allCmd());
-                }
-            } else
-                switch (command.name) {
-                case "help":
-                    helpUnauthrozied();
-                    break;
-                case "register":
-                    System.out.println("Введите имя пользователя");
-                    String username = scanner.nextLine().trim().replaceAll("\\s+","");
-
-                    while (username.equals("")) {
-                        System.out.println("Имя пользователя не должно быть пустым");
-                        username = scanner.nextLine().trim().replaceAll("\\s+","");
-                    }
-
-                    System.out.println("Введите почту");
-                    String email = scanner.nextLine();
-
-                    System.out.println("Введите пароль");
-                    String pass;
-                    String passAgain;
-                    if (console == null) {
-                        pass = scanner.nextLine().trim();
-
-                        while (pass.length() < 4) {
-                            System.out.println("Минимальная длина пароля - 4 символов");
-                            pass = scanner.nextLine().trim();
-                        }
-                        System.out.println("Повторите пароль");
-                        passAgain = scanner.nextLine().trim();
-                    } else {
-                        pass = new String(console.readPassword()).trim();
-
-                        while (pass.length() < 4) {
-                            System.out.println("Минимальная длина пароля - 4 символов");
-                            pass = new String(console.readPassword()).trim();
-                        }
-                        System.out.println("Повторите пароль");
-                        passAgain = new String(console.readPassword()).trim();
-                    }
-
-                    boolean match = pass.equals(passAgain);
-
-                    String hash = getHash(pass);
-
-                    if (match) {
-                        sendToServer("register "+username+" "+ email +" "+ hash);
-                    } else System.out.println("Пароли не совпадают!");
-
-                    break;
-                case "login":
-                    System.out.println("Введите имя пользователя(Пробелы будут удалены)");
-                    String login = scanner.nextLine().trim();
-
-                    while (login.equals("")) {
-                        System.out.println("Имя пользователя не должно быть пустым");
-                        login = scanner.nextLine().trim();
-                    }
-
-                    System.out.println("Введите пароль");
-                    String password;
-                    if (console != null) password = new String(console.readPassword()).trim();
-                    else password = scanner.nextLine().trim();
-                    password = getHash(password);
-                    sendToServer("login "+login+" "+password);
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    if (isSendingToken) {
-                        sendToServer(readLine()+"$null");
-                        isSendingToken = false;
-                    }
-                    break;
-                case "exit":
-                    sendToServer("exit");
-                    return true;
-                default:
-                    System.out.println("Команда не найдена");
-                }
-
-            return false;
-        } catch (NoSuchElementException e) {
-            return false;
+            cmd.setToken(authToken);
+            sendCMD(cmd);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return false;
     }
 
-    public String readLine() {
-           return scanner.nextLine();
-    }
 
-    public void sendToServer(String str) {
+    public void sendCMD(Command cmd) {
         try {
-            writer.writeUTF(str);
+            writer.writeObject(cmd);
             writer.flush();
         } catch (IOException e) {
-            System.out.println("Невозможно отравить запрос серверу.");
+            System.err.println("Невозможно отравить запрос серверу.");
+            e.printStackTrace();
         }
+    }
+
+
+    public static void setIsAuth(boolean a) {
+        isAuth = a;
     }
 
     public void deauth() {
         ClientCommandHandler.setIsAuth(false);
         ClientCommandHandler.playerClient = null;
         ClientCommandHandler.joinedPlayers.clear();
-        sendToServer("deauth null$"+authToken);
     }
 
-    public static void setIsAuth(boolean a) {
-        isAuth = a;
-    }
-
-    public void sendObject(Object obj) {
+    public void sendHuman(Human hum) {
         try {
-            writer.writeObject(obj);
-        } catch (Exception e) {
+            writer.writeObject(hum);
+            writer.flush();
+        } catch (IOException e) {
+            System.err.println("Невозможно отравить персонажа");
             e.printStackTrace();
-        }
-    }
-
-
-    public void helpUnauthrozied() {
-        System.out.println("register - регистрация нового пользователя\n" +
-                "login - авторизоваться как уже существующий пользователь");
-    }
-
-    public static String getHash(String pass) {
-        try {
-            byte[] derived = SCrypt.scrypt(pass.getBytes(), "salt".getBytes(), 16, 16, 16, 32);
-            return new String(Base64.encode(derived));
-        } catch (Exception e) {
-            return null;
         }
     }
 

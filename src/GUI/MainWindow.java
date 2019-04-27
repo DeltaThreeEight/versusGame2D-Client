@@ -1,7 +1,10 @@
 package GUI;
 
+import Entities.Human;
+import Entities.Moves;
 import GUI.Controllers.MainController;
 import ServerCon.ClientCommandHandler;
+import Server.Command;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -35,28 +38,61 @@ public class MainWindow extends AnchorPane {
         mainController.localize();
 
 
-        ClientCommandHandler.dH.executeCommand("show");
+        ClientCommandHandler.dH.executeCommand(new Command("show"));
 
         scene.setOnKeyPressed(event -> {
             KeyCode keyCode = event.getCode();
-            switch (keyCode.toString()) {
-                case "W":
-                    ClientCommandHandler.dH.executeCommand("move FORWARD");
-                    break;
-                case "S":
-                    ClientCommandHandler.dH.executeCommand("move BACK");
-                    break;
-                case "A":
-                    ClientCommandHandler.dH.executeCommand("move LEFT");
-                    break;
-                case "D":
-                    ClientCommandHandler.dH.executeCommand("move RIGHT");
-                    break;
+            if (ClientCommandHandler.playerClient != null) {
+                switch (keyCode.toString()) {
+                    case "W":
+                        ClientCommandHandler.dH.executeCommand(new Command("move", "BACK"));
+                        ClientCommandHandler.playerClient.move(Moves.BACK);
+                        break;
+                    case "S":
+                        ClientCommandHandler.dH.executeCommand(new Command("move", "FORWARD"));
+                        ClientCommandHandler.playerClient.move(Moves.FORWARD);
+                        break;
+                    case "A":
+                        ClientCommandHandler.dH.executeCommand(new Command("move", "LEFT"));
+                        ClientCommandHandler.playerClient.move(Moves.LEFT);
+                        break;
+                    case "D":
+                        ClientCommandHandler.dH.executeCommand(new Command("move", "RIGHT"));
+                        ClientCommandHandler.playerClient.move(Moves.RIGHT);
+                        break;
+                }
+                camera();
             }
         });
 
 //        Pane graphics = mainController.getGraphics();
 //        graphics.getChildren().addAll(imageView1);
+    }
+
+    public void camera(){
+        Pane graphics = mainController.getGraphics();
+        double WIDTH = graphics.getWidth();
+        double HEIGHT = graphics.getHeight();
+        double PLAYER_X = WIDTH/2-10;
+        double PLAYER_Y = HEIGHT/2-10;
+
+        Human plr = ClientCommandHandler.playerClient;
+        plr.translateXProperty().addListener((obs , old , newValue)->{
+            int offset = newValue.intValue();
+            if (offset >  PLAYER_X && offset<WIDTH+200 - plr.getLocation().getX()){
+                graphics.setLayoutX(-(offset - plr.getLocation().getX() ));
+            }else if(offset< PLAYER_X && offset<WIDTH+200 - plr.getLocation().getX()){
+                graphics.setLayoutX(-(offset - plr.getLocation().getX() ));
+            }
+        });
+        plr.translateYProperty().addListener((obs , old , newValue)->{
+            int offset = newValue.intValue();
+            if(offset >  PLAYER_Y && offset<HEIGHT+200 - plr.getLocation().getY()){
+                graphics.setLayoutY(-(offset - plr.getLocation().getY()));
+            }else if(offset< PLAYER_Y && offset<HEIGHT+200 - plr.getLocation().getY()){
+                graphics.setLayoutY(-(offset - plr.getLocation().getY()));
+            }
+        });
     }
 
     public MainController getMainController() {

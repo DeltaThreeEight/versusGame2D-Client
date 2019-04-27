@@ -3,7 +3,10 @@ package ServerCon;
 import Entities.Human;
 import Entities.Moves;
 import GUI.Main;
+import GUI.TokenInputWindow;
+import Server.Command;
 import javafx.application.Platform;
+import javafx.stage.Stage;
 
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
@@ -11,7 +14,6 @@ import java.util.ResourceBundle;
 
 public class ClientReciever extends Thread {
     private ResourceBundle rb = Main.getMain().getRb();
-    private final String AUTH_TOKE_TIMEOUT = rb.getString("auth_token_timeout");
     private final String PLR_JOIN = rb.getString("plr_join");
     private final String PLR_LEFT = rb.getString("plr_left");
     private final String AUTH_SUCCESS = rb.getString("auth_success");
@@ -26,10 +28,17 @@ public class ClientReciever extends Thread {
     private final String NO_PERSON = rb.getString("no_person");
     private final String PERSON_ALREADY_SELECTED = rb.getString("person_already_selected");
     private final String PERSON_SELECTED = rb.getString("person_selected");
+    private final String SEL_PERSON = rb.getString("sel_person");
     private final String SAME_NAME = rb.getString("same_name");
     private final String PERSON_REMOVED = rb.getString("person_removed");
     private final String LEFT_SERVER = rb.getString("left_server");
     private final String SERVER_MESSAGE = rb.getString("server_message");
+    private final String EXPIRED_TOKEN = rb.getString("expired_token");
+    private final String EXPIRED_REGISTRATION_TOKEN = rb.getString("expired_registration_token");
+    private final String EMAIL_CONF = rb.getString("email_conf");
+    private final String WRONG_TOKEN = rb.getString("wrong_token");
+    private final String UNCONF_TOKEN = rb.getString("unconf_token");
+    private final String DEF_PERSON = rb.getString("def_prsn");
 
     private ObjectInputStream inputStream;
 
@@ -54,6 +63,7 @@ public class ClientReciever extends Thread {
                             String part1 = respond.split(" ")[0];
                             alert = getMsgRes(part1)+ " " + respond.replace(part1+" ", "");
                         } else alert = getMsgRes(respond);
+                        System.out.println(respond);
                         Platform.runLater( () ->  Main.showAlert(alert));
                         break;
                     case "SEND":
@@ -95,21 +105,27 @@ public class ClientReciever extends Thread {
                         ClientCommandHandler.authToken = respond;
                         break;
                     case "SENDTOKEN":
-                        ClientCommandHandler.isSendingToken = true;
+                        Platform.runLater(() -> {
+                            Stage stage = new Stage();
+                            stage.setOnCloseRequest(event -> ClientCommandHandler.dH.sendCMD(new Command("sddsd")));
+                            TokenInputWindow window = new TokenInputWindow();
+                            ClientCommandHandler.dH.setToken_window(stage);
+                            stage.setScene(window.getScen());
+                            stage.show();
+                            Main.showAlert(getMsgRes("UNCONF_TOKEN"));
+                        });
+
                         break;
                     case "DEAUTH":
                         ClientCommandHandler.dH.deauth();
-                        Platform.runLater(() -> {
-                            ClientCommandHandler.mainWindow.getMainController().closeMain();
-                            Main.showAlert(AUTH_TOKE_TIMEOUT);
-                        });
+                        Platform.runLater(() -> ClientCommandHandler.mainWindow.getMainController().closeMain());
                         break;
                     case "DESERIALIZE":
                         try {
                             Human person = (Human) inputStream.readObject();
                             ClientCommandHandler.playerClient = person;
                             addHum(person);
-                            Platform.runLater(() -> ClientCommandHandler.mainWindow.getMainController().setSelectedPerson(person.getName()));
+                            Platform.runLater(() -> ClientCommandHandler.mainWindow.getMainController().setSelectedPerson(String.format(SEL_PERSON, person.getName())));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -155,12 +171,23 @@ public class ClientReciever extends Thread {
                         try {
                             Human rem = ClientCommandHandler.joinedPlayers.get(respond);
                             Platform.runLater(() -> {
-                                Platform.runLater( () -> ClientCommandHandler.mainWindow.getMainController().addToChat(String
-                                        .format("%s %s", rem.getName(), PLR_LEFT)));
-                                rem.hide();
+                                try {
+                                    ClientCommandHandler.mainWindow.getMainController().addToChat(String
+                                            .format("%s %s", rem.getName(), PLR_LEFT));
+                                    rem.hide();
+                                } catch (NullPointerException e) {
+                                    ClientCommandHandler.mainWindow.getMainController().setSelectedPerson(DEF_PERSON);
+                                    if (ClientCommandHandler.playerClient != null)
+                                        ClientCommandHandler.playerClient.hide();
+                                    ClientCommandHandler.playerClient = null;
+                                }
                             });
                             ClientCommandHandler.joinedPlayers.remove(respond);
                         } catch (NullPointerException e) {
+                            ClientCommandHandler.mainWindow.getMainController().setSelectedPerson(DEF_PERSON);
+                            ClientCommandHandler.mainWindow.getMainController().setSelectedPerson(DEF_PERSON);
+                            if (ClientCommandHandler.playerClient != null)
+                                ClientCommandHandler.playerClient.hide();
                             ClientCommandHandler.playerClient = null;
                         }
                         break;
@@ -206,6 +233,16 @@ public class ClientReciever extends Thread {
                 return SAME_NAME;
             case "PERSON_REMOVED":
                 return PERSON_REMOVED;
+            case "EXPIRED_TOKEN":
+                return EXPIRED_TOKEN;
+            case "EXPIRED_REGISTRATION_TOKEN":
+                return EXPIRED_REGISTRATION_TOKEN;
+            case "EMAIL_CONF":
+                return EMAIL_CONF;
+            case "WRONG_TOKEN":
+                return WRONG_TOKEN;
+            case "UNCONF_TOKEN":
+                return UNCONF_TOKEN;
         }
         return null;
     }

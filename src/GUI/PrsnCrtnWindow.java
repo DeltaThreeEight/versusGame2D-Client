@@ -1,6 +1,9 @@
 package GUI;
 
+import Entities.Merc;
+import Entities.Spy;
 import ServerCon.ClientCommandHandler;
+import Server.Command;
 import javafx.geometry.Orientation;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -27,9 +30,12 @@ public class PrsnCrtnWindow {
                 }
                 RadioButton sel = (RadioButton) group.getSelectedToggle();
                 if (sel != null && sel.equals(mercBtn)) {
-                    ClientCommandHandler.dH.executeCommand("createnew "+name.getText().replaceAll("\\s+","")+ " Merc");
-                } else if (sel != null)
-                    ClientCommandHandler.dH.executeCommand("createnew "+name.getText().replaceAll("\\s+","")+ " Spy");
+                    ClientCommandHandler.dH.executeCommand(new Command("createnew", name.getText().trim()));
+                    ClientCommandHandler.dH.sendHuman(new Merc(name.getText().trim()));
+                } else if (sel != null) {
+                    ClientCommandHandler.dH.executeCommand(new Command("createnew", name.getText().trim()));
+                    ClientCommandHandler.dH.sendHuman(new Spy(name.getText().trim()));
+                }
                 if (sel != null) instance.hide();
                     else Main.showAlert("Не выбрана сторона");
             });

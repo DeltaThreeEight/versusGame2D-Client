@@ -4,6 +4,7 @@ import Entities.Human;
 import GUI.Main;
 import GUI.PrsnCrtnWindow;
 import ServerCon.ClientCommandHandler;
+import Server.Command;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -47,16 +48,20 @@ public class MainController {
         ObservableList<String> persons = selectedItems.getSelectedItems();
         if (persons.size() == 1) {
             String name = persons.get(0).replaceAll("\n", "");
-            ClientCommandHandler.dH.executeCommand("select "+name);
+            ClientCommandHandler.dH.executeCommand(new Command("select", name));
         }
     }
 
-    public void setSelectedPerson(String name) {
-        usr_prsn.setText("Ваш персонаж: "+name);
+    public void setSelectedPerson(String text) {
+        usr_prsn.setText(text);
     }
 
+
     public void closeMain() {
-        Platform.runLater(() -> Main.getMain().getPrimaryStage().show());
+        Platform.runLater(() -> {
+            Main.getMain().getPrimaryStage().setScene(Main.getMain().getPrimaryScene());
+            Main.getMain().getPrimaryStage().show();
+        });
     }
 
     public Pane getGraphics() {
@@ -66,14 +71,14 @@ public class MainController {
     @FXML
     public void send() {
         if (!msg.getText().trim().equals("")) {
-            ClientCommandHandler.dH.executeCommand("chat " + msg.getText());
+            ClientCommandHandler.dH.executeCommand(new Command("chat", msg.getText()));
         }
         msg.clear();
     }
 
     @FXML
     public void show_all() {
-        ClientCommandHandler.dH.executeCommand("show_all");
+        ClientCommandHandler.dH.executeCommand(new Command("show_all"));
     }
 
     public void showAllPersons(ArrayList<String> persons) {
@@ -124,7 +129,7 @@ public class MainController {
         ObservableList<String> persons = selectedItems.getSelectedItems();
         if (persons.size() == 1) {
             String name = persons.get(0).replaceAll("\n", "");
-            ClientCommandHandler.dH.executeCommand("remove " + name);
+            ClientCommandHandler.dH.executeCommand(new Command("remove", name));
         }
     }
 
@@ -134,7 +139,7 @@ public class MainController {
         ObservableList<String> persons = selectedItems.getSelectedItems();
         if (persons.size() == 1) {
             String name = persons.get(0).replaceAll("\n", "");
-            ClientCommandHandler.dH.executeCommand("showstats "+name);
+            ClientCommandHandler.dH.executeCommand(new Command("showstats", name));
         }
     }
 }
