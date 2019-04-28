@@ -19,7 +19,6 @@ import java.io.IOException;
 public class MainWindow extends AnchorPane {
     private AnchorPane root;
     private Scene scene;
-    private Pane graphics = new Pane();
 
     private Image image1 = new Image(getClass().getResourceAsStream("map.png"));
     private ImageView imageView1 = new ImageView(image1);
@@ -65,7 +64,9 @@ public class MainWindow extends AnchorPane {
             }
         });
 
-//        Pane graphics = mainController.getGraphics();
+
+        Pane graphics = mainController.getGraphics();
+        graphics.setStyle("-fx-background-color: grey;");
 //        graphics.getChildren().addAll(imageView1);
     }
 
@@ -77,21 +78,23 @@ public class MainWindow extends AnchorPane {
         double PLAYER_Y = HEIGHT/2-10;
 
         Human plr = ClientCommandHandler.playerClient;
-        plr.translateXProperty().addListener((obs , old , newValue)->{
-            int offset = newValue.intValue();
-            if (offset >  PLAYER_X && offset<WIDTH+200 - plr.getLocation().getX()){
-                graphics.setLayoutX(-(offset - plr.getLocation().getX() ));
-            }else if(offset< PLAYER_X && offset<WIDTH+200 - plr.getLocation().getX()){
-                graphics.setLayoutX(-(offset - plr.getLocation().getX() ));
-            }
-        });
-        plr.translateYProperty().addListener((obs , old , newValue)->{
-            int offset = newValue.intValue();
-            if(offset >  PLAYER_Y && offset<HEIGHT+200 - plr.getLocation().getY()){
-                graphics.setLayoutY(-(offset - plr.getLocation().getY()));
-            }else if(offset< PLAYER_Y && offset<HEIGHT+200 - plr.getLocation().getY()){
-                graphics.setLayoutY(-(offset - plr.getLocation().getY()));
-            }
+        plr.translateXProperty().addListener( (obs , old , newValue) ->
+            {
+//                int offset = newValue.intValue();
+//                if (offset >  PLAYER_X && offset < WIDTH+200 - plr.getLocation().getX()) {
+//                    plr.setLayoutX(-(offset - plr.getLocation().getX() ));
+//                } else if (offset< PLAYER_X && offset<WIDTH+200 - plr.getLocation().getX()) {
+//                    plr.setLayoutX(-(offset - plr.getLocation().getX() ));
+//                }
+            });
+        plr.translateYProperty().addListener( (obs , old , newValue) ->
+        {
+//            int offset = newValue.intValue();
+//            if (offset >  PLAYER_Y && offset < HEIGHT+200 - plr.getLocation().getY()) {
+//                graphics.setLayoutY(-(offset - plr.getLocation().getY()));
+//            } else if (offset< PLAYER_Y && offset<HEIGHT+200 - plr.getLocation().getY()) {
+//                graphics.setLayoutY(-(offset - plr.getLocation().getY()));
+//            }
         });
     }
 

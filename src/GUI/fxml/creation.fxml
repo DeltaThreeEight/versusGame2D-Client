@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="194.0" prefWidth="238.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controllers.CreationController">
+   <children>
+      <Button fx:id="ok_btn" layoutX="24.0" layoutY="131.0" mnemonicParsing="false" onAction="#createPerson" prefHeight="31.0" prefWidth="187.0" text="OK" AnchorPane.bottomAnchor="32.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="31.0" />
+      <TextField fx:id="name" layoutX="26.0" layoutY="28.0" />
+      <RadioButton fx:id="spy" layoutX="26.0" layoutY="97.0" mnemonicParsing="false" text="RadioButton" />
+      <RadioButton fx:id="merc" layoutX="26.0" layoutY="67.0" mnemonicParsing="false" text="RadioButton" />
+   </children>
+</AnchorPane>

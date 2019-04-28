@@ -10,11 +10,11 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="175.0" prefWidth="314.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controllers.LogController">
    <children>
-      <TextField fx:id="login" layoutX="95.0" layoutY="20.0" promptText="ваш логин" />
-      <PasswordField fx:id="pass" layoutX="95.0" layoutY="68.0" promptText="ваш пароль" />
-      <Label fx:id="log_lbl" layoutX="24.0" layoutY="25.0" prefHeight="21.0" prefWidth="47.0" text="Login:" />
-      <Label fx:id="pass_lbl" layoutX="24.0" layoutY="73.0" text="pass:" />
-      <Button fx:id="btn_cnl" layoutX="218.0" layoutY="120.0" mnemonicParsing="false" onAction="#hide" text="Cancel" />
-      <Button fx:id="btn_log" layoutX="95.0" layoutY="120.0" mnemonicParsing="false" onAction="#login" text="Login" />
+      <TextField fx:id="login" layoutX="95.0" layoutY="20.0" promptText="ваш логин" AnchorPane.leftAnchor="95.0" AnchorPane.rightAnchor="32.0" AnchorPane.topAnchor="20.0" />
+      <PasswordField fx:id="pass" layoutX="95.0" layoutY="68.0" promptText="ваш пароль" AnchorPane.leftAnchor="95.0" AnchorPane.rightAnchor="32.0" AnchorPane.topAnchor="68.0" />
+      <Label fx:id="log_lbl" layoutX="24.0" layoutY="25.0" prefHeight="21.0" prefWidth="47.0" text="Login:" AnchorPane.leftAnchor="24.0" AnchorPane.topAnchor="25.0" />
+      <Label fx:id="pass_lbl" layoutX="24.0" layoutY="77.0" text="pass:" AnchorPane.leftAnchor="24.0" AnchorPane.topAnchor="77.0" />
+      <Button fx:id="btn_cnl" layoutX="218.0" layoutY="120.0" mnemonicParsing="false" onAction="#hide" prefHeight="31.0" prefWidth="110.0" text="Cancel" AnchorPane.bottomAnchor="24.0" AnchorPane.rightAnchor="32.0" />
+      <Button fx:id="btn_log" layoutX="19.0" layoutY="120.0" mnemonicParsing="false" onAction="#login" prefHeight="31.0" prefWidth="124.0" text="Login" AnchorPane.bottomAnchor="24.0" AnchorPane.leftAnchor="19.0" />
    </children>
 </AnchorPane>

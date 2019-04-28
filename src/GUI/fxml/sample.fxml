@@ -8,9 +8,10 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="240.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controllers.Controller">
+
+<AnchorPane maxHeight="90.0" maxWidth="270.0" minHeight="90.0" minWidth="270.0" prefHeight="90.0" prefWidth="270.0" snapToPixel="false" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controllers.Controller">
    <children>
-      <Button fx:id="btn_reg" layoutX="152.0" layoutY="15.0" mnemonicParsing="false" onAction="#showRegWindow" text="Register" />
-      <Button fx:id="btn_log" layoutX="14.0" layoutY="15.0" mnemonicParsing="false" onAction="#showLogWindow" text="Login" />
+      <Button fx:id="btn_log" layoutX="26.0" layoutY="30.0" mnemonicParsing="false" onAction="#showLogWindow" prefHeight="31.0" prefWidth="90.0" text="Login" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="30.0" />
+      <Button fx:id="btn_reg" layoutX="154.0" layoutY="30.0" mnemonicParsing="false" onAction="#showRegWindow" prefHeight="30.0" prefWidth="96.0" text="Register" AnchorPane.bottomAnchor="30.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="30.0" />
    </children>
-</Pane>
+</AnchorPane>

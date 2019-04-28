@@ -22,7 +22,9 @@ public class LangController {
     public void selectLang() {
         String lang = langs.getValue();
         Main.getMain().setLocale(lang);
-        Main.getMain().tryConnect();
+        try {
+            Main.getMain().tryConnect();
+        } catch (NullPointerException ignored) { }
     }
 
     public void init() {

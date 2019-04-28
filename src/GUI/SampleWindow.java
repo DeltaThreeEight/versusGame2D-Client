@@ -7,7 +7,7 @@ import javafx.scene.layout.Pane;
 
 import java.io.IOException;
 
-public class SampleWindow extends Pane {
+public class SampleWindow {
     private Pane root;
     private Scene scene;
 
@@ -21,6 +21,7 @@ public class SampleWindow extends Pane {
         }
         ((Controller) loader.getController()).localize();
         scene = new Scene(root);
+
     }
 
     public Scene getScen() {

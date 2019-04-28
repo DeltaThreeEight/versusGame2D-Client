@@ -6,9 +6,12 @@ import GUI.Main;
 import GUI.TokenInputWindow;
 import Server.Command;
 import javafx.application.Platform;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import java.io.EOFException;
 import java.io.ObjectInputStream;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -82,7 +85,13 @@ public class ClientReciever extends Thread {
                         }
                         if (respond.trim().equals("$EOF$")) {
                             ArrayList<String> temp = persons;
-                            Platform.runLater( () -> ClientCommandHandler.mainWindow.getMainController().setUserPersons(temp));
+                            Platform.runLater( () -> {
+                                Stage crt_window = ClientCommandHandler.mainWindow.getMainController().getCreationWindow();
+                                if (crt_window != null) {
+                                    crt_window.hide();
+                                }
+                                ClientCommandHandler.mainWindow.getMainController().setUserPersons(temp);
+                            });
                             persons = null;
                         } else {
                             persons.add(respond);
@@ -117,15 +126,16 @@ public class ClientReciever extends Thread {
 
                         break;
                     case "DEAUTH":
-                        ClientCommandHandler.dH.deauth();
-                        Platform.runLater(() -> ClientCommandHandler.mainWindow.getMainController().closeMain());
+                        Platform.runLater(() -> Main.closeReq());
                         break;
                     case "DESERIALIZE":
                         try {
                             Human person = (Human) inputStream.readObject();
-                            ClientCommandHandler.playerClient = person;
-                            addHum(person);
-                            Platform.runLater(() -> ClientCommandHandler.mainWindow.getMainController().setSelectedPerson(String.format(SEL_PERSON, person.getName())));
+                            Platform.runLater(() -> {
+                                ClientCommandHandler.playerClient = person;
+                                addHum(person);
+                                ClientCommandHandler.mainWindow.getMainController().setSelectedPerson(String.format(SEL_PERSON, person.getName()));
+                            });
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -146,7 +156,6 @@ public class ClientReciever extends Thread {
                         try {
                             obj = (Human) inputStream.readObject();
                         } catch (Exception i) {
-                            i.printStackTrace();
                             break;
                         }
                         addHum(obj);
@@ -165,31 +174,27 @@ public class ClientReciever extends Thread {
                         ClientCommandHandler.joinedPlayers.put(key, hum);
                         if (ClientCommandHandler.getIsAuth())
                             Platform.runLater( () -> ClientCommandHandler.mainWindow.getMainController().addToChat(String
-                                    .format("%s %s", hum.getName(), PLR_JOIN)));
+                                    .format("%s %s%n", hum.getName(), PLR_JOIN)));
                         break;
                     case "REMPLAYER":
-                        try {
+                        Pane graphics = ClientCommandHandler.mainWindow.getMainController().getGraphics();
                             Human rem = ClientCommandHandler.joinedPlayers.get(respond);
                             Platform.runLater(() -> {
                                 try {
                                     ClientCommandHandler.mainWindow.getMainController().addToChat(String
-                                            .format("%s %s", rem.getName(), PLR_LEFT));
+                                            .format("%s %s%n", rem.getName(), PLR_LEFT));
                                     rem.hide();
+                                    graphics.getChildren().removeAll(rem);
                                 } catch (NullPointerException e) {
                                     ClientCommandHandler.mainWindow.getMainController().setSelectedPerson(DEF_PERSON);
-                                    if (ClientCommandHandler.playerClient != null)
+                                    if (ClientCommandHandler.playerClient != null) {
                                         ClientCommandHandler.playerClient.hide();
+                                        graphics.getChildren().removeAll(ClientCommandHandler.playerClient);
+                                    }
                                     ClientCommandHandler.playerClient = null;
                                 }
                             });
                             ClientCommandHandler.joinedPlayers.remove(respond);
-                        } catch (NullPointerException e) {
-                            ClientCommandHandler.mainWindow.getMainController().setSelectedPerson(DEF_PERSON);
-                            ClientCommandHandler.mainWindow.getMainController().setSelectedPerson(DEF_PERSON);
-                            if (ClientCommandHandler.playerClient != null)
-                                ClientCommandHandler.playerClient.hide();
-                            ClientCommandHandler.playerClient = null;
-                        }
                         break;
                     case "MOVPLAYER":
                         Moves move = Moves.valueOf(respond.split("\\^")[0]);
@@ -201,6 +206,14 @@ public class ClientReciever extends Thread {
                         break;
                 }
             }
+        }
+        catch (SocketException s) {
+            System.out.println("Потеряно соединение с сервером");
+            System.exit(0);
+        }
+        catch (EOFException x) {
+            System.out.println("Сервер закрыл соединение");
+            System.exit(0);
         }
         catch (Exception e) {
             e.printStackTrace();

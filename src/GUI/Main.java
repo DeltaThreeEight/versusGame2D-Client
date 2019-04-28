@@ -45,6 +45,7 @@ public class Main extends Application {
         primaryStage = stages;
 
         primaryStage.setTitle("Lab 8");
+        primaryStage.setResizable(false);
 
         primaryStage.setScene(new LangWindow().getScen());
         primaryStage.show();
@@ -107,7 +108,10 @@ public class Main extends Application {
         primaryScene = new SampleWindow().getScen();
         primaryStage.setScene(primaryScene);
         primaryStage.show();
-        primaryStage.setOnCloseRequest(event -> System.exit(0));
+        primaryStage.setOnCloseRequest(event -> {
+            ClientCommandHandler.dH.executeCommand(new Command("exit"));
+            System.exit(0);
+        });
     }
 
     public Scene getPrimaryScene() {
@@ -162,12 +166,27 @@ public class Main extends Application {
     private static void showMainScreen() {
         ClientCommandHandler.mainWindow = new MainWindow();
         getMain().getPrimaryStage().setScene(ClientCommandHandler.mainWindow.getScen());
+        getMain().getPrimaryStage().setResizable(true);
         getMain().getPrimaryStage().setOnCloseRequest(event -> {
-            getMain().getPrimaryStage().setScene(getMain().getPrimaryScene());
             ClientCommandHandler.dH.executeCommand(new Command("deauth"));
-            ClientCommandHandler.dH.deauth();
-            getMain().getPrimaryStage().setOnCloseRequest(event1 -> System.exit(0));
-            Platform.runLater(() -> getMain().getPrimaryStage().show());
+            closeReq();
+        });
+    }
+
+    public static void closeReq() {
+        getMain().getPrimaryStage().setScene(getMain().getPrimaryScene());
+        getMain().getPrimaryStage().sizeToScene();
+        getMain().getPrimaryStage().setMinWidth(1);
+        getMain().getPrimaryStage().setMinHeight(1);
+        ClientCommandHandler.dH.deauth();
+        getMain().getPrimaryStage().setOnCloseRequest(event1 -> {
+            ClientCommandHandler.dH.executeCommand(new Command("exit"));
+            System.exit(0);
+        });
+        Platform.runLater(() -> {
+            getMain().getPrimaryStage().setMaximized(false);
+            getMain().getPrimaryStage().setResizable(false);
+            getMain().getPrimaryStage().show();
         });
     }
 

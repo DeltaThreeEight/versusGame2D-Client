@@ -3,6 +3,7 @@ package Entities;
 import Entities.exceptions.NotAliveException;
 import World.Location;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -63,6 +64,7 @@ public abstract class Human extends Pane implements Moveable, Comparable<Human>,
     }
 
     public void move(Moves move) throws NotAliveException {
+
         checkAlive();
 
         lastMove = move;
@@ -70,9 +72,10 @@ public abstract class Human extends Pane implements Moveable, Comparable<Human>,
         setTranslateY(getTranslateY() + move.getY()*speedModifier);
         setTranslateX(getTranslateX() + move.getX()*speedModifier);
 
+        loc.setXY(loc.getX()+ move.getX()*speedModifier, loc.getY() + move.getY()*speedModifier);
+
         System.out.println("Перемещение "+loc);
 
-        loc.setXY(loc.getX()+ move.getX()*speedModifier, loc.getY() + move.getY()*speedModifier);
     }
 
     public abstract void shoot();
@@ -115,10 +118,14 @@ public abstract class Human extends Pane implements Moveable, Comparable<Human>,
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Human)) return false;
-        Human creature = (Human) o;
-        return Objects.equals(name, creature.name) &&
-                Objects.equals(loc, creature.loc) &&
-                Objects.equals(hp, creature.hp);
+        Human human = (Human) o;
+        return hp == human.hp &&
+                Double.compare(human.speedModifier, speedModifier) == 0 &&
+                Objects.equals(name, human.name) &&
+                Objects.equals(loc, human.loc) &&
+                lastMove == human.lastMove &&
+                Objects.equals(dateOfCreation, human.dateOfCreation) &&
+                Objects.equals(user, human.user);
     }
 
     public LocalDateTime getDate() {

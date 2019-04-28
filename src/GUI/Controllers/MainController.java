@@ -1,8 +1,8 @@
 package GUI.Controllers;
 
 import Entities.Human;
+import GUI.CreationWindow;
 import GUI.Main;
-import GUI.PrsnCrtnWindow;
 import ServerCon.ClientCommandHandler;
 import Server.Command;
 import javafx.application.Platform;
@@ -41,6 +41,7 @@ public class MainController {
     private ListView<String> persons;
     @FXML
     private Pane graphics;
+    private Stage creationWindow;
 
     @FXML
     public void select() {
@@ -54,14 +55,6 @@ public class MainController {
 
     public void setSelectedPerson(String text) {
         usr_prsn.setText(text);
-    }
-
-
-    public void closeMain() {
-        Platform.runLater(() -> {
-            Main.getMain().getPrimaryStage().setScene(Main.getMain().getPrimaryScene());
-            Main.getMain().getPrimaryStage().show();
-        });
     }
 
     public Pane getGraphics() {
@@ -90,7 +83,20 @@ public class MainController {
 
     @FXML
     public void create() {
-        PrsnCrtnWindow.ShowCreationWindow();
+        if (creationWindow != null)
+            return;
+        creationWindow = new Stage();
+        creationWindow.setAlwaysOnTop(true);
+        creationWindow.setOnCloseRequest(event -> creationWindow = null);
+        creationWindow.setResizable(false);
+        creationWindow.setScene(new CreationWindow().getScen());
+        creationWindow.show();
+    }
+
+    public Stage getCreationWindow() {
+        Stage temp = creationWindow;
+        creationWindow = null;
+        return temp;
     }
 
     public void setUserPersons(ArrayList<String> persons) {
@@ -106,6 +112,8 @@ public class MainController {
     }
 
     public void localize() {
+        Main.getMain().getPrimaryStage().setMinHeight(460);
+        Main.getMain().getPrimaryStage().setMinWidth(800);
         ResourceBundle rb = Main.getMain().getRb();
         String usrPsrn = rb.getString("def_prsn");
         usr_prsn.setText(usrPsrn);
