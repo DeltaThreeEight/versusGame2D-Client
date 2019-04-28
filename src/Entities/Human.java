@@ -2,18 +2,23 @@ package Entities;
 
 import Entities.exceptions.NotAliveException;
 import World.Location;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Orientation;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
 
-public abstract class Human extends Pane implements Moveable, Comparable<Human>, Serializable {
+public abstract class Human extends FlowPane implements Moveable, Comparable<Human>, Serializable {
     private String name;
     private Location loc;
     private int hp = 100;
@@ -51,12 +56,7 @@ public abstract class Human extends Pane implements Moveable, Comparable<Human>,
     }
 
     public void show() {
-        setTranslateY(loc.getY());
-        setTranslateX(loc.getX());
-        Image image = new Image(getClass().getResourceAsStream("1.png"));
-        ImageView imageView = new ImageView(image);
-        imageView.setViewport(new Rectangle2D(0, 0, 32, 32));
-        getChildren().addAll(imageView);
+
     }
 
     public void hide() {

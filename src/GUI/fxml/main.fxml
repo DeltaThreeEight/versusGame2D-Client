@@ -9,8 +9,14 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 
+
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="468.0" prefWidth="804.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controllers.MainController">
    <children>
+      <Pane fx:id="graphics" layoutX="263.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="466.0" prefWidth="344.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="263.0" AnchorPane.rightAnchor="197.0" AnchorPane.topAnchor="0.0">
+         <cursor>
+            <Cursor fx:constant="DISAPPEAR" />
+         </cursor>
+      </Pane>
       <AnchorPane prefHeight="468.0" prefWidth="252.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Button fx:id="all_prsns" layoutX="79.0" layoutY="421.0" mnemonicParsing="false" onAction="#show_all" prefHeight="31.0" prefWidth="134.0" text="Все персонажи" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="60.0" />
@@ -37,10 +43,5 @@
             <TextArea fx:id="msg" layoutX="14.0" layoutY="309.0" prefHeight="92.0" prefWidth="177.0" AnchorPane.bottomAnchor="57.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
          </children>
       </AnchorPane>
-      <Pane fx:id="graphics" layoutX="253.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="466.0" prefWidth="344.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="253.0" AnchorPane.rightAnchor="207.0" AnchorPane.topAnchor="0.0">
-         <cursor>
-            <Cursor fx:constant="DISAPPEAR" />
-         </cursor>
-      </Pane>
    </children>
 </AnchorPane>
