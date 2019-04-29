@@ -1,8 +1,12 @@
 package ServerCon;
 
 import Entities.Human;
+import GUI.Main;
 import GUI.MainWindow;
 import Server.Command;
+import javafx.scene.Node;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -65,6 +69,11 @@ public class ClientCommandHandler {
     }
 
     public void deauth() {
+        for (Node n : mainWindow.getMainController().getGraphics().getChildren()) {
+            if (n instanceof Human) {
+                ((Human) n).hide();
+            }
+        }
         ClientCommandHandler.setIsAuth(false);
         ClientCommandHandler.playerClient = null;
         ClientCommandHandler.joinedPlayers.clear();

@@ -1,6 +1,8 @@
 package Entities;
 
 import Entities.exceptions.NotAliveException;
+import GUI.Main;
+import ServerCon.ClientCommandHandler;
 import World.Location;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Orientation;
@@ -11,9 +13,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Rectangle;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.HttpURLConnection;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
@@ -71,6 +75,21 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
 
         setTranslateY(getTranslateY() + move.getY()*speedModifier);
         setTranslateX(getTranslateX() + move.getX()*speedModifier);
+
+//        boolean intersects = false;
+//        for (Node n : ClientCommandHandler.mainWindow.getMainController().getGraphics().getChildren()) {
+//            if (n != this) {
+//                if (n instanceof Human) {
+//                    if (col_rec.getBoundsInParent().intersects(((Human) n).col_rec.getBoundsInParent())) {
+//                        setTranslateY(getTranslateY() - move.getY() * speedModifier);
+//                        setTranslateX(getTranslateX() - move.getX() * speedModifier);
+//                        intersects = true;
+//                        System.out.println("Касание");
+//                        break;
+//                    }
+//                }
+//            }
+//        }
 
         loc.setXY(loc.getX()+ move.getX()*speedModifier, loc.getY() + move.getY()*speedModifier);
 

@@ -6,6 +6,8 @@ import GUI.Main;
 import ServerCon.ClientCommandHandler;
 import Server.Command;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -13,12 +15,15 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class MainController {
+    @FXML
+    private Rectangle col_rec;
     @FXML
     private Label chat;
     @FXML
@@ -129,6 +134,12 @@ public class MainController {
         all_prsns.setText(all);
         String send = rb.getString("btn_send");
         btn_send.setText(send);
+        graphics.heightProperty().addListener((observable, oldValue, newValue) -> graphics.setClip(new Rectangle(graphics.getWidth(), graphics.getHeight())));
+        graphics.widthProperty().addListener((observable, oldValue, newValue) -> graphics.setClip(new Rectangle(graphics.getWidth(), graphics.getHeight())));
+    }
+
+    public Rectangle getCol_rec() {
+        return col_rec;
     }
 
     @FXML

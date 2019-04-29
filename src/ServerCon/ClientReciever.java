@@ -116,7 +116,7 @@ public class ClientReciever extends Thread {
                     case "SENDTOKEN":
                         Platform.runLater(() -> {
                             Stage stage = new Stage();
-                            stage.setOnCloseRequest(event -> ClientCommandHandler.dH.sendCMD(new Command("sddsd")));
+                            stage.setOnCloseRequest(event -> ClientCommandHandler.dH.sendCMD(new Command("sddsd", "sdad")));
                             TokenInputWindow window = new TokenInputWindow();
                             ClientCommandHandler.dH.setToken_window(stage);
                             stage.setScene(window.getScen());

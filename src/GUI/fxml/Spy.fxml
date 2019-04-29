@@ -10,7 +10,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<Pane prefHeight="64.0" prefWidth="32.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controllers.CreationController">
+<Pane prefHeight="64.0" prefWidth="32.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controllers.MainController">
    <children>
       <Ellipse layoutX="15.0" layoutY="28.0" radiusX="9.0" radiusY="16.0" stroke="BLACK" strokeType="INSIDE" />
       <Pane layoutX="7.0" prefHeight="15.0" prefWidth="15.0">
@@ -23,5 +23,6 @@
       </Pane>
       <Ellipse layoutX="9.0" layoutY="49.0" radiusX="3.0" radiusY="13.0" stroke="BLACK" strokeType="INSIDE" />
       <Ellipse layoutX="21.0" layoutY="48.0" radiusX="3.0" radiusY="13.0" stroke="BLACK" strokeType="INSIDE" />
+      <Rectangle fx:id="col_rec" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="47.0" layoutX="3.0" layoutY="16.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="24.0" />
    </children>
 </Pane>

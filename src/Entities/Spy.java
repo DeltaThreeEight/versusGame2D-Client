@@ -1,5 +1,6 @@
 package Entities;
 
+import ServerCon.ClientCommandHandler;
 import World.Location;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Orientation;
@@ -33,14 +34,12 @@ public class Spy extends Human {
             e.printStackTrace();
             System.exit(-1);
         }
+
         setTranslateY(getLocation().getY());
         setTranslateX(getLocation().getX());
-        Image image = new Image(getClass().getResourceAsStream("1.png"));
-        ImageView imageView = new ImageView(image);
-        imageView.setViewport(new Rectangle2D(0, 0, 32, 64));
+
         Label nm = new Label(getName());
-        this.setOrientation(Orientation.VERTICAL);
-        Rectangle2D ds = new Rectangle2D(0,0,32,32);
+        setOrientation(Orientation.VERTICAL);
         getChildren().addAll(nm, root);
     }
 
