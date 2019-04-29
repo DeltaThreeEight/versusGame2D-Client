@@ -196,6 +196,17 @@ public class ClientReciever extends Thread {
                             });
                             ClientCommandHandler.joinedPlayers.remove(respond);
                         break;
+                    case "TELEPORT":
+                        String name1 = respond.split("\\^")[1];
+                        String xy = respond.replace("^"+name1, "");
+                        double x = Double.parseDouble(xy.split(" ")[0]);
+                        double y = Double.parseDouble(xy.split(" ")[1]);
+
+                        Human player3 = ClientCommandHandler.joinedPlayers.get(name1);
+                        ClientCommandHandler.joinedPlayers.values().stream()
+                                .filter(c -> player3.getName().equals(c.getName()))
+                                .forEach(c -> c.teleportOther(x, y));
+                        break;
                     case "MOVPLAYER":
                         Moves move = Moves.valueOf(respond.split("\\^")[0]);
                         respond = respond.replace(move+"^", "");

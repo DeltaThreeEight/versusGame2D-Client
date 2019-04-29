@@ -147,9 +147,6 @@ public class MainController {
 
     @FXML
     public void stats() {
-        LinkedList l = new LinkedList();
-        ListIterator it = l.listIterator(499999);
-        it.add(2);
         MultipleSelectionModel<String> selectedItems = persons.getSelectionModel();
         ObservableList<String> persons = selectedItems.getSelectedItems();
         if (persons.size() == 1) {

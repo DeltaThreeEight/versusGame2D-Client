@@ -79,10 +79,22 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
         loc.setXY(loc.getX()+ move.getX()*speedModifier, loc.getY() + move.getY()*speedModifier);
     }
 
-    public boolean checkIntersects(Human h) {return false;}
+    public boolean checkIntersects(Human h) {
+        if (((Path) Shape.intersect(col_rec, h.col_rec)).getElements().size() > 0) return true;
+        else return false;
+    }
+
+    public void teleportOther(double x, double y) {
+        setTranslateX(x);
+        setTranslateY(y);
+        loc.setXY(x, y);
+    }
 
     public void teleport(double x, double y) {
-
+        setTranslateX(x);
+        setTranslateY(y);
+        loc.setXY(x, y);
+        ClientCommandHandler.dH.executeCommand(new Command("teleport", x+"", y+""));
     }
 
     public void move(Moves move) throws NotAliveException {
@@ -99,11 +111,14 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
             if (n instanceof Human) {
                 Human h = (Human) n;
                 if (h.col_rec != this.col_rec) {
-                    if (((Path) Shape.intersect(col_rec, h.col_rec)).getElements().size() > 0) {
+                    if (checkIntersects(h)) {
                         intersects = true;
                         System.out.println("Касание");
                         setTranslateY(getTranslateY() - move.getY()*speedModifier);
                         setTranslateX(getTranslateX() - move.getX()*speedModifier);
+                        while (checkIntersects(h)) {
+                            teleport(loc.getX() + 10, loc.getY() + 10);
+                        }
                         break;
                     }
                 }
