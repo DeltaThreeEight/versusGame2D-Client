@@ -202,7 +202,7 @@ public class ClientReciever extends Thread {
                         Human player2 = ClientCommandHandler.joinedPlayers.get(respond);
                         ClientCommandHandler.joinedPlayers.values().stream()
                                 .filter(c -> player2.getName().equals(c.getName()))
-                                .forEach(c -> {c.move(move); if (ClientCommandHandler.getIsAuth()) System.out.println(c.getName() + " переместился: "+c.getLocation().getName());});
+                                .forEach(c -> c.moveOther(move));
                         break;
                 }
             }

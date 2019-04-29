@@ -3,11 +3,8 @@ package GUI.Controllers;
 import Entities.Human;
 import GUI.CreationWindow;
 import GUI.Main;
-import ServerCon.ClientCommandHandler;
 import Server.Command;
-import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import ServerCon.ClientCommandHandler;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -19,11 +16,11 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.ListIterator;
 import java.util.ResourceBundle;
 
 public class MainController {
-    @FXML
-    private Rectangle col_rec;
     @FXML
     private Label chat;
     @FXML
@@ -138,10 +135,6 @@ public class MainController {
         graphics.widthProperty().addListener((observable, oldValue, newValue) -> graphics.setClip(new Rectangle(graphics.getWidth(), graphics.getHeight())));
     }
 
-    public Rectangle getCol_rec() {
-        return col_rec;
-    }
-
     @FXML
     public void delete() {
         MultipleSelectionModel<String> selectedItems = persons.getSelectionModel();
@@ -154,6 +147,9 @@ public class MainController {
 
     @FXML
     public void stats() {
+        LinkedList l = new LinkedList();
+        ListIterator it = l.listIterator(499999);
+        it.add(2);
         MultipleSelectionModel<String> selectedItems = persons.getSelectionModel();
         ObservableList<String> persons = selectedItems.getSelectedItems();
         if (persons.size() == 1) {

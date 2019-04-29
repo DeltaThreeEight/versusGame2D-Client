@@ -1,18 +1,14 @@
 package Entities;
 
-import ServerCon.ClientCommandHandler;
+import GUI.Controllers.HumanController;
 import World.Location;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Orientation;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 public class Spy extends Human {
 
@@ -27,14 +23,14 @@ public class Spy extends Human {
 
     public void show() {
         Pane root = null;
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../GUI/fxml/Spy.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Spy.fxml"));
         try {
             root = loader.load();
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(-1);
         }
-
+        setCol_rec(((HumanController) loader.getController()).getCol_rec());
         setTranslateY(getLocation().getY());
         setTranslateX(getLocation().getX());
 

@@ -44,19 +44,15 @@ public class MainWindow extends AnchorPane {
             if (ClientCommandHandler.playerClient != null) {
                 switch (keyCode.toString()) {
                     case "W":
-                        ClientCommandHandler.dH.executeCommand(new Command("move", "BACK"));
                         ClientCommandHandler.playerClient.move(Moves.BACK);
                         break;
                     case "S":
-                        ClientCommandHandler.dH.executeCommand(new Command("move", "FORWARD"));
                         ClientCommandHandler.playerClient.move(Moves.FORWARD);
                         break;
                     case "A":
-                        ClientCommandHandler.dH.executeCommand(new Command("move", "LEFT"));
                         ClientCommandHandler.playerClient.move(Moves.LEFT);
                         break;
                     case "D":
-                        ClientCommandHandler.dH.executeCommand(new Command("move", "RIGHT"));
                         ClientCommandHandler.playerClient.move(Moves.RIGHT);
                         break;
                 }

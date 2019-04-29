@@ -45,7 +45,10 @@ public class ClientCommandHandler {
     public boolean executeCommand(Command cmd) {
         try {
             cmd.setToken(authToken);
-            sendCMD(cmd);
+            switch (cmd.getName()) {
+                default:
+                    sendCMD(cmd);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -1,25 +1,17 @@
 package Entities;
 
 import Entities.exceptions.NotAliveException;
-import GUI.Main;
+import Server.Command;
 import ServerCon.ClientCommandHandler;
 import World.Location;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Orientation;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 
-import java.io.IOException;
 import java.io.Serializable;
-import java.net.HttpURLConnection;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Objects;
 
 public abstract class Human extends FlowPane implements Moveable, Comparable<Human>, Serializable {
@@ -30,6 +22,15 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
     private LocalDateTime dateOfCreation;
     private double speedModifier = 1.0;
     private String user = "default";
+    private Rectangle col_rec;
+
+    public Rectangle getCol_rec() {
+        return col_rec;
+    }
+
+    public void setCol_rec(Rectangle col_rec) {
+        this.col_rec = col_rec;
+    }
 
     public void setUser(String str) {
         user = str;
@@ -67,6 +68,23 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
         getChildren().clear();
     }
 
+    public void moveOther(Moves move) {
+        checkAlive();
+
+        lastMove = move;
+
+        setTranslateY(getTranslateY() + move.getY()*speedModifier);
+        setTranslateX(getTranslateX() + move.getX()*speedModifier);
+
+        loc.setXY(loc.getX()+ move.getX()*speedModifier, loc.getY() + move.getY()*speedModifier);
+    }
+
+    public boolean checkIntersects(Human h) {return false;}
+
+    public void teleport(double x, double y) {
+
+    }
+
     public void move(Moves move) throws NotAliveException {
 
         checkAlive();
@@ -76,24 +94,28 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
         setTranslateY(getTranslateY() + move.getY()*speedModifier);
         setTranslateX(getTranslateX() + move.getX()*speedModifier);
 
-//        boolean intersects = false;
-//        for (Node n : ClientCommandHandler.mainWindow.getMainController().getGraphics().getChildren()) {
-//            if (n != this) {
-//                if (n instanceof Human) {
-//                    if (col_rec.getBoundsInParent().intersects(((Human) n).col_rec.getBoundsInParent())) {
-//                        setTranslateY(getTranslateY() - move.getY() * speedModifier);
-//                        setTranslateX(getTranslateX() - move.getX() * speedModifier);
-//                        intersects = true;
-//                        System.out.println("Касание");
-//                        break;
-//                    }
-//                }
-//            }
-//        }
+        boolean intersects = false;
+        for (Node n : ClientCommandHandler.mainWindow.getMainController().getGraphics().getChildren()) {
+            if (n instanceof Human) {
+                Human h = (Human) n;
+                if (h.col_rec != this.col_rec) {
+                    if (((Path) Shape.intersect(col_rec, h.col_rec)).getElements().size() > 0) {
+                        intersects = true;
+                        System.out.println("Касание");
+                        setTranslateY(getTranslateY() - move.getY()*speedModifier);
+                        setTranslateX(getTranslateX() - move.getX()*speedModifier);
+                        break;
+                    }
+                }
+            }
+        }
 
-        loc.setXY(loc.getX()+ move.getX()*speedModifier, loc.getY() + move.getY()*speedModifier);
+        if (!intersects) {
+            ClientCommandHandler.dH.executeCommand(new Command("move", move.toString()));
+            loc.setXY(loc.getX()+ move.getX()*speedModifier, loc.getY() + move.getY()*speedModifier);
+            System.out.println("Перемещение "+loc);
+        }
 
-        System.out.println("Перемещение "+loc);
 
     }
 
