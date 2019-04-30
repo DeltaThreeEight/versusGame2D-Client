@@ -1,14 +1,24 @@
 package Entities;
 
 import GUI.Controllers.HumanController;
+import Server.Command;
+import ServerCon.ClientCommandHandler;
 import World.Location;
+import javafx.animation.TranslateTransition;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Orientation;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Path;
+import javafx.scene.shape.Shape;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class Merc extends Human {
 
@@ -51,8 +61,10 @@ public class Merc extends Human {
         super(name, location, date);
     }
 
+
+
     public void shoot() {
-        //TODO как же будет стрелять винтовка?
+        super.shoot();
     }
 
 }

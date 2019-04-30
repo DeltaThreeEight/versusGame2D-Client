@@ -55,6 +55,9 @@ public class MainWindow extends AnchorPane {
                     case "D":
                         ClientCommandHandler.playerClient.move(Moves.RIGHT);
                         break;
+                    case "F":
+                        ClientCommandHandler.playerClient.shoot();
+                        break;
                 }
                 camera();
             }

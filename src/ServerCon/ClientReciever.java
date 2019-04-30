@@ -207,13 +207,18 @@ public class ClientReciever extends Thread {
                                 .filter(c -> player3.getName().equals(c.getName()))
                                 .forEach(c -> c.teleportOther(x, y));
                         break;
+                    case "SHOOT":
+                        Human playerShoot = ClientCommandHandler.joinedPlayers.get(respond);
+                        Platform.runLater(() -> playerShoot.shootOther());
+                        break;
                     case "MOVPLAYER":
                         Moves move = Moves.valueOf(respond.split("\\^")[0]);
                         respond = respond.replace(move+"^", "");
                         Human player2 = ClientCommandHandler.joinedPlayers.get(respond);
-                        ClientCommandHandler.joinedPlayers.values().stream()
-                                .filter(c -> player2.getName().equals(c.getName()))
-                                .forEach(c -> c.moveOther(move));
+                        player2.moveOther(move);
+//                        ClientCommandHandler.joinedPlayers.values().stream()
+//                                .filter(c -> player2.getName().equals(c.getName()))
+//                                .forEach(c -> c.moveOther(move));
                         break;
                 }
             }

@@ -4,11 +4,16 @@ import Entities.exceptions.NotAliveException;
 import Server.Command;
 import ServerCon.ClientCommandHandler;
 import World.Location;
+import javafx.animation.TranslateTransition;
 import javafx.scene.Node;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
+import javafx.util.Duration;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -23,6 +28,10 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
     private double speedModifier = 1.0;
     private String user = "default";
     private Rectangle col_rec;
+
+    public Moves getLastMove() {
+        return lastMove;
+    }
 
     public Rectangle getCol_rec() {
         return col_rec;
@@ -134,7 +143,48 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
 
     }
 
-    public abstract void shoot();
+    public void shootOther() {
+        System.out.println("SHOOT");
+        final Shape bullet = new Circle(2, Color.ORANGE);
+        ClientCommandHandler.mainWindow.getMainController().getGraphics().getChildren().add(bullet);
+        final TranslateTransition bulletAnimation = new TranslateTransition(Duration.seconds(2), bullet);
+
+        bulletAnimation.setFromX(getLocation().getX()+16);
+        bulletAnimation.setFromY(getLocation().getY()+32);
+
+        bulletAnimation.setToX(getLastMove().getX()*1000+getLocation().getX()+16);
+        bulletAnimation.setToY(getLastMove().getY()*1000+getLocation().getY()+32);
+
+        bullet.boundsInParentProperty().addListener((observable, oldValue, newValue) -> {
+            Pane fr = ClientCommandHandler.mainWindow.getMainController().getGraphics();
+            for (Node n : fr.getChildren()) {
+                if (n instanceof Human) {
+                    Human h = (Human) n;
+                    if (h.getCol_rec() != this.getCol_rec()) {
+                        if (((Path)Shape.intersect(bullet, h.getCol_rec())).getElements().size() > 0) {
+                            System.out.println("Попадание");
+                            h.setHealth(h.getHealth() - 10);
+                            System.out.println(h.getHealth());
+                            bulletAnimation.stop();
+                            fr.getChildren().remove(bullet);
+                            break;
+                        }
+                    }
+                }
+            }
+
+        });
+
+        bulletAnimation.setOnFinished(event -> ClientCommandHandler.mainWindow.getMainController().getGraphics().getChildren().remove(bullet));
+        bulletAnimation.play();
+    }
+
+
+    public void shoot() {
+        shootOther();
+        ClientCommandHandler.dH.executeCommand(new Command("shoot"));
+
+    }
 
     public int getHealth() {
         return hp;
