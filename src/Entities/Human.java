@@ -78,14 +78,15 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
     }
 
     public void moveOther(Moves move) {
-        checkAlive();
+        if (isAlive()) {
 
-        lastMove = move;
+            lastMove = move;
 
-        setTranslateY(getTranslateY() + move.getY()*speedModifier);
-        setTranslateX(getTranslateX() + move.getX()*speedModifier);
+            setTranslateY(getTranslateY() + move.getY() * speedModifier);
+            setTranslateX(getTranslateX() + move.getX() * speedModifier);
 
-        loc.setXY(loc.getX()+ move.getX()*speedModifier, loc.getY() + move.getY()*speedModifier);
+            loc.setXY(loc.getX() + move.getX() * speedModifier, loc.getY() + move.getY() * speedModifier);
+        }
     }
 
     public boolean checkIntersects(Human h) {
@@ -107,39 +108,61 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
     }
 
     public void move(Moves move) throws NotAliveException {
+        if (isAlive()) {
+            lastMove = move;
 
-        checkAlive();
+            setTranslateY(getTranslateY() + move.getY() * speedModifier);
+            setTranslateX(getTranslateX() + move.getX() * speedModifier);
 
-        lastMove = move;
-
-        setTranslateY(getTranslateY() + move.getY()*speedModifier);
-        setTranslateX(getTranslateX() + move.getX()*speedModifier);
-
-        boolean intersects = false;
-        for (Node n : ClientCommandHandler.mainWindow.getMainController().getGraphics().getChildren()) {
-            if (n instanceof Human) {
-                Human h = (Human) n;
-                if (h.col_rec != this.col_rec) {
-                    if (checkIntersects(h)) {
+            boolean intersects = false;
+            for (Node n : ClientCommandHandler.mainWindow.getMainController().getGraphics().getChildren()) {
+                if (n instanceof Human) {
+                    Human h = (Human) n;
+                    if (h.col_rec != this.col_rec) {
+                        if (checkIntersects(h)) {
+                            intersects = true;
+                            System.out.println("Касание");
+                            setTranslateY(getTranslateY() - move.getY() * speedModifier);
+                            setTranslateX(getTranslateX() - move.getX() * speedModifier);
+                            while (checkIntersects(h)) {
+                                teleport(loc.getX() + 10, loc.getY() + 10);
+                            }
+                            break;
+                        }
+                    }
+                }
+                if (n instanceof Wall) {
+                    Wall h = (Wall) n;
+                    if(((Path) Shape.intersect(col_rec, h.getWall())).getElements().size() > 0) {
                         intersects = true;
                         System.out.println("Касание");
-                        setTranslateY(getTranslateY() - move.getY()*speedModifier);
-                        setTranslateX(getTranslateX() - move.getX()*speedModifier);
-                        while (checkIntersects(h)) {
+                        setTranslateY(getTranslateY() - move.getY() * speedModifier);
+                        setTranslateX(getTranslateX() - move.getX() * speedModifier);
+                        while (((Path) Shape.intersect(col_rec, h.getWall())).getElements().size() > 0) {
                             teleport(loc.getX() + 10, loc.getY() + 10);
                         }
-                        break;
+                    }
+                }
+                if (n instanceof BigWall) {
+                    BigWall h = (BigWall) n;
+                    if(((Path) Shape.intersect(col_rec, h.getWall())).getElements().size() > 0) {
+                        intersects = true;
+                        System.out.println("Касание");
+                        setTranslateY(getTranslateY() - move.getY() * speedModifier);
+                        setTranslateX(getTranslateX() - move.getX() * speedModifier);
+                        while (((Path) Shape.intersect(col_rec, h.getWall())).getElements().size() > 0) {
+                            teleport(loc.getX() + 10, loc.getY() + 10);
+                        }
                     }
                 }
             }
-        }
 
-        if (!intersects) {
-            ClientCommandHandler.dH.executeCommand(new Command("move", move.toString()));
-            loc.setXY(loc.getX()+ move.getX()*speedModifier, loc.getY() + move.getY()*speedModifier);
-            System.out.println("Перемещение "+loc);
-        }
-
+            if (!intersects) {
+                ClientCommandHandler.dH.executeCommand(new Command("move", move.toString()));
+                loc.setXY(loc.getX() + move.getX() * speedModifier, loc.getY() + move.getY() * speedModifier);
+                System.out.println("Перемещение " + loc);
+            }
+        } else System.out.println("Перемещние невозможно");
 
     }
 
@@ -149,11 +172,11 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
         ClientCommandHandler.mainWindow.getMainController().getGraphics().getChildren().add(bullet);
         final TranslateTransition bulletAnimation = new TranslateTransition(Duration.seconds(2), bullet);
 
-        bulletAnimation.setFromX(getLocation().getX()+16);
-        bulletAnimation.setFromY(getLocation().getY()+32);
+        ((Circle) bullet).setCenterX(getLocation().getX()+16);
+        ((Circle) bullet).setCenterY(getLocation().getY()+32);
 
-        bulletAnimation.setToX(getLastMove().getX()*1000+getLocation().getX()+16);
-        bulletAnimation.setToY(getLastMove().getY()*1000+getLocation().getY()+32);
+        bulletAnimation.setToX(getLastMove().getX()*1000);
+        bulletAnimation.setToY(getLastMove().getY()*1000);
 
         bullet.boundsInParentProperty().addListener((observable, oldValue, newValue) -> {
             Pane fr = ClientCommandHandler.mainWindow.getMainController().getGraphics();
@@ -162,13 +185,30 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
                     Human h = (Human) n;
                     if (h.getCol_rec() != this.getCol_rec()) {
                         if (((Path)Shape.intersect(bullet, h.getCol_rec())).getElements().size() > 0) {
-                            System.out.println("Попадание");
+                            System.out.println("Hit!");
                             h.setHealth(h.getHealth() - 10);
-                            System.out.println(h.getHealth());
                             bulletAnimation.stop();
                             fr.getChildren().remove(bullet);
                             break;
                         }
+                    }
+                }
+                if (n instanceof BigWall) {
+                    BigWall h = (BigWall) n;
+                    if (((Path)Shape.intersect(bullet, h.getWall())).getElements().size() > 0) {
+                        System.out.println("Hit!");
+                        bulletAnimation.stop();
+                        fr.getChildren().remove(bullet);
+                        break;
+                    }
+                }
+                if (n instanceof Wall) {
+                    Wall h = (Wall) n;
+                    if (((Path)Shape.intersect(bullet, h.getWall())).getElements().size() > 0) {
+                        System.out.println("Hit!");
+                        bulletAnimation.stop();
+                        fr.getChildren().remove(bullet);
+                        break;
                     }
                 }
             }
@@ -181,8 +221,57 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
 
 
     public void shoot() {
-        shootOther();
         ClientCommandHandler.dH.executeCommand(new Command("shoot"));
+        System.out.println("SHOOT");
+        final Shape bullet = new Circle(2, Color.ORANGE);
+        ClientCommandHandler.mainWindow.getMainController().getGraphics().getChildren().add(bullet);
+        final TranslateTransition bulletAnimation = new TranslateTransition(Duration.seconds(2), bullet);
+        ((Circle) bullet).setCenterX(getLocation().getX()+16);
+        ((Circle) bullet).setCenterY(getLocation().getY()+32);
+
+        bulletAnimation.setToX(getLastMove().getX()*1000);
+        bulletAnimation.setToY(getLastMove().getY()*1000);
+
+        bullet.boundsInParentProperty().addListener((observable, oldValue, newValue) -> {
+            Pane fr = ClientCommandHandler.mainWindow.getMainController().getGraphics();
+            for (Node n : fr.getChildren()) {
+                if (n instanceof Human) {
+                    Human h = (Human) n;
+                    if (h.getCol_rec() != this.getCol_rec()) {
+                        if (((Path)Shape.intersect(bullet, h.getCol_rec())).getElements().size() > 0) {
+                            System.out.println("Hit!");
+                            h.setHealth(h.getHealth() - 10);
+                            ClientCommandHandler.dH.executeCommand(new Command("hit", h.getName()));
+                            bulletAnimation.stop();
+                            fr.getChildren().remove(bullet);
+                            break;
+                        }
+                    }
+                }
+                if (n instanceof BigWall) {
+                    BigWall h = (BigWall) n;
+                    if (((Path)Shape.intersect(bullet, h.getWall())).getElements().size() > 0) {
+                        System.out.println("Hit!");
+                        bulletAnimation.stop();
+                        fr.getChildren().remove(bullet);
+                        break;
+                    }
+                }
+                if (n instanceof Wall) {
+                    Wall h = (Wall) n;
+                        if (((Path) Shape.intersect(bullet, h.getWall())).getElements().size() > 0) {
+                            System.out.println("Hit!");
+                            bulletAnimation.stop();
+                            fr.getChildren().remove(bullet);
+                            break;
+                    }
+                }
+            }
+
+        });
+
+        bulletAnimation.setOnFinished(event -> ClientCommandHandler.mainWindow.getMainController().getGraphics().getChildren().remove(bullet));
+        bulletAnimation.play();
 
     }
 
@@ -211,8 +300,8 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
         return name;
     }
 
-    public void checkAlive() throws NotAliveException{
-        if (hp < 1) throw new NotAliveException(this);
+    public boolean isAlive() {
+        return hp > 0 ? true : false;
     }
 
     @Override

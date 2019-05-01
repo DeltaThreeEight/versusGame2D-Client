@@ -1,11 +1,12 @@
 package GUI;
 
-import Entities.Human;
-import Entities.Moves;
+import Entities.*;
 import GUI.Controllers.MainController;
+import GUI.Controllers.MapController;
 import ServerCon.ClientCommandHandler;
 import Server.Command;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -14,6 +15,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 
 public class MainWindow extends AnchorPane {
@@ -42,31 +44,29 @@ public class MainWindow extends AnchorPane {
         scene.setOnKeyPressed(event -> {
             KeyCode keyCode = event.getCode();
             if (ClientCommandHandler.playerClient != null) {
-                switch (keyCode.toString()) {
-                    case "W":
+                switch (keyCode) {
+                    case W:
                         ClientCommandHandler.playerClient.move(Moves.BACK);
                         break;
-                    case "S":
+                    case S:
                         ClientCommandHandler.playerClient.move(Moves.FORWARD);
                         break;
-                    case "A":
+                    case A:
                         ClientCommandHandler.playerClient.move(Moves.LEFT);
                         break;
-                    case "D":
+                    case D:
                         ClientCommandHandler.playerClient.move(Moves.RIGHT);
                         break;
-                    case "F":
+                    case F:
                         ClientCommandHandler.playerClient.shoot();
                         break;
                 }
-                camera();
             }
         });
 
 
         Pane graphics = mainController.getGraphics();
-        graphics.setStyle("-fx-background-color: grey;");
-//        graphics.getChildren().addAll(imageView1);
+        loadMap(graphics);
     }
 
     public void camera(){
@@ -103,6 +103,23 @@ public class MainWindow extends AnchorPane {
 
     public Scene getScen() {
         return scene;
+    }
+
+    private void loadMap(Pane graphics) {
+        Pane root = null;
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/Map.fxml"));
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(-1);
+        }
+
+        ArrayList<BigWall> a = ((MapController) loader.getController()).getAllWalls();
+
+        graphics.getChildren().addAll(root);
+        graphics.getChildren().addAll(a);
+        graphics.setStyle("-fx-background-color: green;");
     }
 
 }

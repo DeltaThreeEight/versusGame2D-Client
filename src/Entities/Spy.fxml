@@ -10,19 +10,12 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<Pane prefHeight="64.0" prefWidth="32.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controllers.HumanController">
+<Pane prefHeight="32.0" prefWidth="23.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controllers.HumanController">
    <children>
-      <Ellipse layoutX="15.0" layoutY="28.0" radiusX="9.0" radiusY="16.0" stroke="BLACK" strokeType="INSIDE" />
-      <Pane layoutX="7.0" prefHeight="15.0" prefWidth="15.0">
-         <children>
-            <Ellipse fill="#030303" layoutX="8.0" layoutY="7.0" radiusX="5.0" radiusY="7.0" stroke="BLACK" strokeType="INSIDE" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#22a838" height="3.0" layoutX="5.0" layoutY="6.0" smooth="false" stroke="#31a81e" strokeType="INSIDE" width="3.0" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#22a838" height="3.0" layoutX="9.0" layoutY="6.0" smooth="false" stroke="#31a81e" strokeType="INSIDE" width="3.0" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#22a838" height="3.0" layoutX="7.0" layoutY="3.0" smooth="false" stroke="#31a81e" strokeType="INSIDE" width="3.0" />
-         </children>
-      </Pane>
-      <Ellipse layoutX="9.0" layoutY="49.0" radiusX="3.0" radiusY="13.0" stroke="BLACK" strokeType="INSIDE" />
-      <Ellipse layoutX="21.0" layoutY="48.0" radiusX="3.0" radiusY="13.0" stroke="BLACK" strokeType="INSIDE" />
-      <Rectangle fx:id="col_rec" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="38.0" layoutX="9.0" layoutY="16.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="12.0" />
+      <Ellipse layoutX="11.0" layoutY="15.0" radiusX="7.0" radiusY="10.0" stroke="BLACK" strokeType="INSIDE" />
+      <Rectangle fx:id="col_rec" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" layoutX="3.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="16.0" />
+      <Ellipse layoutX="11.0" layoutY="26.0" radiusX="4.0" radiusY="3.0" stroke="BLACK" strokeType="INSIDE" />
+      <Ellipse layoutX="11.0" layoutY="5.0" radiusX="4.0" radiusY="3.0" stroke="BLACK" strokeType="INSIDE" />
+      <Ellipse fill="#726666" layoutX="11.0" layoutY="14.0" radiusX="5.0" radiusY="5.0" stroke="BLACK" strokeType="INSIDE" />
    </children>
 </Pane>

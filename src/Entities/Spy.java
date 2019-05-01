@@ -18,7 +18,10 @@ public class Spy extends Human {
 
     public Spy(String name) {
         super(name);
-        getLocation().setXY(10,10);
+        if (Math.random() > 0.5)
+            getLocation().setXY(270,270);
+        else
+            getLocation().setXY(20,270);
     }
 
     public void show() {
@@ -48,6 +51,6 @@ public class Spy extends Human {
     }
 
     public void shoot() {
-        //TODO придумать как же стерлять из шокера
+        super.shoot();
     }
 }

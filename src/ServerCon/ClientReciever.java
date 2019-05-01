@@ -181,8 +181,8 @@ public class ClientReciever extends Thread {
                             Human rem = ClientCommandHandler.joinedPlayers.get(respond);
                             Platform.runLater(() -> {
                                 try {
-                                    ClientCommandHandler.mainWindow.getMainController().addToChat(String
-                                            .format("%s %s%n", rem.getName(), PLR_LEFT));
+                                    ClientCommandHandler.mainWindow.getMainController().addToChat(String.format
+                                            ("%s %s%n", rem.getName(), PLR_LEFT));
                                     rem.hide();
                                     graphics.getChildren().removeAll(rem);
                                 } catch (NullPointerException e) {
@@ -211,14 +211,29 @@ public class ClientReciever extends Thread {
                         Human playerShoot = ClientCommandHandler.joinedPlayers.get(respond);
                         Platform.runLater(() -> playerShoot.shootOther());
                         break;
+                    case "KILLPLAYER":
+                        Pane graphics1 = ClientCommandHandler.mainWindow.getMainController().getGraphics();
+                        if (ClientCommandHandler.playerClient != null && respond.equals(ClientCommandHandler.playerClient.getName())) {
+                            Platform.runLater( () -> {
+                                Main.showAlert("Ваш персонаж убит");
+                                //graphics1.getChildren().remove(ClientCommandHandler.playerClient);
+                                ClientCommandHandler.playerClient.hide();
+                                System.out.println(graphics1.getChildren());
+                                ClientCommandHandler.playerClient = null;
+                            });
+                        } else {
+                            Human killed = ClientCommandHandler.joinedPlayers.get(respond);
+                            Platform.runLater( () -> {
+                                killed.hide();
+                                //graphics1.getChildren().removeAll(killed);
+                            });
+                        }
+                        break;
                     case "MOVPLAYER":
                         Moves move = Moves.valueOf(respond.split("\\^")[0]);
                         respond = respond.replace(move+"^", "");
                         Human player2 = ClientCommandHandler.joinedPlayers.get(respond);
                         player2.moveOther(move);
-//                        ClientCommandHandler.joinedPlayers.values().stream()
-//                                .filter(c -> player2.getName().equals(c.getName()))
-//                                .forEach(c -> c.moveOther(move));
                         break;
                 }
             }
