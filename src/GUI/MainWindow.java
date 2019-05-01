@@ -43,22 +43,22 @@ public class MainWindow extends AnchorPane {
 
         scene.setOnKeyPressed(event -> {
             KeyCode keyCode = event.getCode();
-            if (ClientCommandHandler.playerClient != null) {
+            if (ClientCommandHandler.getPlayerClient() != null) {
                 switch (keyCode) {
                     case W:
-                        ClientCommandHandler.playerClient.move(Moves.BACK);
+                        ClientCommandHandler.getPlayerClient().move(Moves.BACK);
                         break;
                     case S:
-                        ClientCommandHandler.playerClient.move(Moves.FORWARD);
+                        ClientCommandHandler.getPlayerClient().move(Moves.FORWARD);
                         break;
                     case A:
-                        ClientCommandHandler.playerClient.move(Moves.LEFT);
+                        ClientCommandHandler.getPlayerClient().move(Moves.LEFT);
                         break;
                     case D:
-                        ClientCommandHandler.playerClient.move(Moves.RIGHT);
+                        ClientCommandHandler.getPlayerClient().move(Moves.RIGHT);
                         break;
                     case F:
-                        ClientCommandHandler.playerClient.shoot();
+                        ClientCommandHandler.getPlayerClient().shoot();
                         break;
                 }
             }
@@ -76,7 +76,7 @@ public class MainWindow extends AnchorPane {
         double PLAYER_X = WIDTH/2-10;
         double PLAYER_Y = HEIGHT/2-10;
 
-        Human plr = ClientCommandHandler.playerClient;
+        Human plr = ClientCommandHandler.getPlayerClient();
         plr.translateXProperty().addListener( (obs , old , newValue) ->
             {
 //                int offset = newValue.intValue();

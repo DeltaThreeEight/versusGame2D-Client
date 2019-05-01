@@ -1,12 +1,16 @@
 package ServerCon;
 
 import Entities.Human;
+import Entities.Spy;
 import GUI.Main;
 import GUI.MainWindow;
 import Server.Command;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -16,19 +20,60 @@ import java.util.HashMap;
 public class ClientCommandHandler {
 
     static HashMap<String,Human> joinedPlayers = new HashMap<>();
-    public static Human playerClient;
+    private static Human playerClient;
     static String authToken = null;
     public static ClientCommandHandler dH;
     public static MainWindow mainWindow;
     private Stage token_window;
     private ObjectOutputStream writer;
     private static boolean isAuth = false;
+    private static Rectangle hpBar;
+    private static Rectangle hpRem;
+    private static Label hp;
 
     public ClientCommandHandler(ObjectOutputStream writer) {
         this.writer = writer;
         dH = this;
     }
 
+    public static Rectangle getHpBar() {
+        return hpRem;
+    }
+
+    public static void setPlayerClient(Human playerClient) {
+        Pane graphics = mainWindow.getMainController().getGraphics();
+        hp = new Label("HP");
+        hp.setTextFill(Paint.valueOf("RED"));
+        hpBar = new Rectangle();
+        hpRem = new Rectangle();
+        hpRem.setHeight(12);
+        hpRem.setWidth(56);
+        hpRem.setTranslateX(22);
+        hpRem.setTranslateY(2);
+        hpBar.setTranslateX(20);
+        hpBar.setWidth(60);
+        hpBar.setHeight(16);
+        hpRem.setFill(Paint.valueOf("RED"));
+        hpBar.setFill(Paint.valueOf("BLACK"));
+        double maxHealt;
+        if (playerClient instanceof Spy)
+            maxHealt = 100;
+        else maxHealt = 150;
+        hpRem.setWidth(56.0*(((double)playerClient.getHealth())/maxHealt));
+        graphics.getChildren().addAll(hp, hpBar, hpRem);
+        ClientCommandHandler.playerClient = playerClient;
+    }
+
+    public static Human getPlayerClient() {
+        return playerClient;
+    }
+
+    public static void setPlayerNull() {
+        Pane graphics = mainWindow.getMainController().getGraphics();
+        playerClient.hide();
+        playerClient = null;
+        graphics.getChildren().removeAll(hp, hpBar, hpRem);
+    }
 
     public Stage getToken_window() {
         return token_window;
@@ -72,13 +117,10 @@ public class ClientCommandHandler {
     }
 
     public void deauth() {
-        for (Node n : mainWindow.getMainController().getGraphics().getChildren()) {
-            if (n instanceof Human) {
-                ((Human) n).hide();
-            }
+        for (Human n : joinedPlayers.values()) {
+            n.hide();
         }
         ClientCommandHandler.setIsAuth(false);
-        ClientCommandHandler.playerClient = null;
         ClientCommandHandler.joinedPlayers.clear();
     }
 

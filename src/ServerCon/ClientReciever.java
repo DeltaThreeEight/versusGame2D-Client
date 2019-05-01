@@ -132,7 +132,7 @@ public class ClientReciever extends Thread {
                         try {
                             Human person = (Human) inputStream.readObject();
                             Platform.runLater(() -> {
-                                ClientCommandHandler.playerClient = person;
+                                ClientCommandHandler.setPlayerClient(person);
                                 addHum(person);
                                 ClientCommandHandler.mainWindow.getMainController().setSelectedPerson(String.format(SEL_PERSON, person.getName()));
                             });
@@ -156,6 +156,7 @@ public class ClientReciever extends Thread {
                         try {
                             obj = (Human) inputStream.readObject();
                         } catch (Exception i) {
+                            i.printStackTrace();
                             break;
                         }
                         addHum(obj);
@@ -177,21 +178,17 @@ public class ClientReciever extends Thread {
                                     .format("%s %s%n", hum.getName(), PLR_JOIN)));
                         break;
                     case "REMPLAYER":
-                        Pane graphics = ClientCommandHandler.mainWindow.getMainController().getGraphics();
                             Human rem = ClientCommandHandler.joinedPlayers.get(respond);
                             Platform.runLater(() -> {
                                 try {
                                     ClientCommandHandler.mainWindow.getMainController().addToChat(String.format
                                             ("%s %s%n", rem.getName(), PLR_LEFT));
                                     rem.hide();
-                                    graphics.getChildren().removeAll(rem);
                                 } catch (NullPointerException e) {
                                     ClientCommandHandler.mainWindow.getMainController().setSelectedPerson(DEF_PERSON);
-                                    if (ClientCommandHandler.playerClient != null) {
-                                        ClientCommandHandler.playerClient.hide();
-                                        graphics.getChildren().removeAll(ClientCommandHandler.playerClient);
+                                    if (ClientCommandHandler.getPlayerClient() != null) {
+                                        ClientCommandHandler.setPlayerNull();
                                     }
-                                    ClientCommandHandler.playerClient = null;
                                 }
                             });
                             ClientCommandHandler.joinedPlayers.remove(respond);
@@ -212,20 +209,15 @@ public class ClientReciever extends Thread {
                         Platform.runLater(() -> playerShoot.shootOther());
                         break;
                     case "KILLPLAYER":
-                        Pane graphics1 = ClientCommandHandler.mainWindow.getMainController().getGraphics();
-                        if (ClientCommandHandler.playerClient != null && respond.equals(ClientCommandHandler.playerClient.getName())) {
+                        if (ClientCommandHandler.getPlayerClient() != null && respond.equals(ClientCommandHandler.getPlayerClient().getName())) {
                             Platform.runLater( () -> {
                                 Main.showAlert("Ваш персонаж убит");
-                                //graphics1.getChildren().remove(ClientCommandHandler.playerClient);
-                                ClientCommandHandler.playerClient.hide();
-                                System.out.println(graphics1.getChildren());
-                                ClientCommandHandler.playerClient = null;
+                                ClientCommandHandler.setPlayerNull();
                             });
                         } else {
                             Human killed = ClientCommandHandler.joinedPlayers.get(respond);
                             Platform.runLater( () -> {
                                 killed.hide();
-                                //graphics1.getChildren().removeAll(killed);
                             });
                         }
                         break;

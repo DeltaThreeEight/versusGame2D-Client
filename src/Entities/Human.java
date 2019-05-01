@@ -1,6 +1,7 @@
 package Entities;
 
 import Entities.exceptions.NotAliveException;
+import GUI.Main;
 import Server.Command;
 import ServerCon.ClientCommandHandler;
 import World.Location;
@@ -74,6 +75,11 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
     }
 
     public void hide() {
+        try {
+            ClientCommandHandler.mainWindow.getMainController().getGraphics().getChildren().removeAll(this);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
         getChildren().clear();
     }
 
@@ -187,6 +193,13 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
                         if (((Path)Shape.intersect(bullet, h.getCol_rec())).getElements().size() > 0) {
                             System.out.println("Hit!");
                             h.setHealth(h.getHealth() - 10);
+                            if (h == ClientCommandHandler.getPlayerClient()) {
+                                double maxHealt = 0;
+                                if (h instanceof Spy)
+                                    maxHealt = 100;
+                                else maxHealt = 150;
+                                ClientCommandHandler.getHpBar().setWidth(56.0*(((double)h.getHealth())/maxHealt));
+                            }
                             bulletAnimation.stop();
                             fr.getChildren().remove(bullet);
                             break;
