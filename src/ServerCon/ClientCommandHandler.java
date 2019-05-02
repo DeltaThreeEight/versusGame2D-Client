@@ -30,6 +30,8 @@ public class ClientCommandHandler {
     private static Rectangle hpBar;
     private static Rectangle hpRem;
     private static Label hp;
+    private static Label ammo;
+    private static Label ammo_amount;
 
     public ClientCommandHandler(ObjectOutputStream writer) {
         this.writer = writer;
@@ -43,6 +45,8 @@ public class ClientCommandHandler {
     public static void setPlayerClient(Human playerClient) {
         Pane graphics = mainWindow.getMainController().getGraphics();
         hp = new Label("HP");
+        ammo = new Label("AMMO:");
+        ammo.setTranslateX(90);
         hp.setTextFill(Paint.valueOf("RED"));
         hpBar = new Rectangle();
         hpRem = new Rectangle();
@@ -60,8 +64,12 @@ public class ClientCommandHandler {
             maxHealt = 100;
         else maxHealt = 150;
         hpRem.setWidth(56.0*(((double)playerClient.getHealth())/maxHealt));
-        graphics.getChildren().addAll(hp, hpBar, hpRem);
         ClientCommandHandler.playerClient = playerClient;
+        ammo_amount = new Label();
+        ammo_amount.setTranslateX(135);
+        ammo_amount.setText(playerClient.getAmmo()+"");
+        graphics.getChildren().addAll(hp, hpBar, hpRem, ammo, ammo_amount);
+
     }
 
     public static Human getPlayerClient() {
@@ -72,7 +80,11 @@ public class ClientCommandHandler {
         Pane graphics = mainWindow.getMainController().getGraphics();
         playerClient.hide();
         playerClient = null;
-        graphics.getChildren().removeAll(hp, hpBar, hpRem);
+        graphics.getChildren().removeAll(hp, hpBar, hpRem, ammo, ammo_amount);
+    }
+
+    public static Label getAmmo_amount() {
+        return ammo_amount;
     }
 
     public Stage getToken_window() {

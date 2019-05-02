@@ -1,6 +1,5 @@
 package GUI;
 
-import GUI.Controllers.LogController;
 import GUI.Controllers.TokenController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;

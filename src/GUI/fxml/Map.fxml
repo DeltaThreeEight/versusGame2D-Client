@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.shape.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<Pane prefHeight="960.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controllers.MapController">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#726868" height="32.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#726868" height="32.0" layoutY="32.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+      <Rectangle arcWidth="5.0" fill="#726868" height="32.0" layoutY="64.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+      <Pane layoutX="32.0" layoutY="32.0" prefHeight="32.0" prefWidth="32.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cd8a39" height="9.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="24.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+         </children>
+      </Pane>
+      <Pane layoutX="64.0" layoutY="64.0" prefHeight="32.0" prefWidth="32.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cd8a39" height="9.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="24.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+         </children>
+      </Pane>
+      <Pane layoutX="64.0" layoutY="32.0" prefHeight="32.0" prefWidth="32.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cd8a39" height="9.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="24.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+         </children>
+      </Pane>
+      <Pane layoutX="32.0" layoutY="64.0" prefHeight="32.0" prefWidth="32.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cd8a39" height="9.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="24.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+         </children>
+      </Pane>
+      <Rectangle fx:id="wall2" arcHeight="5.0" arcWidth="5.0" fill="#726868" height="32.0" layoutX="32.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+      <Rectangle fx:id="wall3" arcHeight="5.0" arcWidth="5.0" fill="#726868" height="32.0" layoutX="64.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+      <Rectangle fx:id="wall4" arcHeight="5.0" arcWidth="5.0" fill="#726868" height="32.0" layoutX="96.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+      <Pane layoutX="96.0" layoutY="32.0" prefHeight="32.0" prefWidth="32.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cd8a39" height="9.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="24.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+         </children>
+      </Pane>
+      <Pane layoutX="96.0" layoutY="64.0" prefHeight="32.0" prefWidth="32.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cd8a39" height="9.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="24.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+         </children>
+      </Pane>
+      <Rectangle fx:id="wall5" arcHeight="5.0" arcWidth="5.0" fill="#726868" height="32.0" layoutX="128.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+      <Rectangle fx:id="wall6" arcHeight="5.0" arcWidth="5.0" fill="#726868" height="32.0" layoutX="160.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+      <Rectangle fx:id="wallN" arcHeight="5.0" arcWidth="5.0" fill="#726868" height="32.0" layoutX="128.0" layoutY="32.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+      <Rectangle fx:id="wall71" arcHeight="5.0" arcWidth="5.0" fill="#726868" height="32.0" layoutX="192.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+      <Rectangle fx:id="wall72" arcHeight="5.0" arcWidth="5.0" fill="#726868" height="32.0" layoutY="96.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+      <Rectangle fx:id="wall73" arcHeight="5.0" arcWidth="5.0" fill="#726868" height="32.0" layoutX="32.0" layoutY="96.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+      <Rectangle fx:id="wall74" arcHeight="5.0" arcWidth="5.0" fill="#726868" height="32.0" layoutX="96.0" layoutY="96.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+      <Pane layoutX="64.0" layoutY="96.0" prefHeight="32.0" prefWidth="32.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cd8a39" height="9.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="24.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+         </children>
+      </Pane>
+      <Rectangle fx:id="wall741" arcHeight="5.0" arcWidth="5.0" fill="#726868" height="32.0" layoutX="128.0" layoutY="96.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+      <Rectangle fx:id="wall7411" arcHeight="5.0" arcWidth="5.0" fill="#726868" height="32.0" layoutX="160.0" layoutY="96.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+      <Rectangle fx:id="wall7412" arcHeight="5.0" arcWidth="5.0" fill="#726868" height="32.0" layoutX="32.0" layoutY="128.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+      <Rectangle fx:id="wall74121" arcHeight="5.0" arcWidth="5.0" fill="#726868" height="32.0" layoutX="32.0" layoutY="160.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+      <Rectangle fx:id="wall74122" arcHeight="5.0" arcWidth="5.0" fill="#726868" height="32.0" layoutY="192.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+      <Rectangle fx:id="wall741221" arcHeight="5.0" arcWidth="5.0" fill="#726868" height="32.0" layoutX="32.0" layoutY="192.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+      <Rectangle fx:id="wall741222" arcHeight="5.0" arcWidth="5.0" fill="#726868" height="32.0" layoutY="224.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+      <Rectangle fx:id="wall7412221" arcHeight="5.0" arcWidth="5.0" fill="#726868" height="32.0" layoutY="256.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+      <Rectangle fx:id="wall74122211" arcHeight="5.0" arcWidth="5.0" fill="#726868" height="32.0" layoutX="32.0" layoutY="256.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+      <Rectangle fx:id="wall741222111" arcHeight="5.0" arcWidth="5.0" fill="#726868" height="32.0" layoutX="64.0" layoutY="256.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+      <Rectangle fx:id="wall7412221111" arcHeight="5.0" arcWidth="5.0" fill="#726868" height="32.0" layoutX="96.0" layoutY="256.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+      <Rectangle fx:id="wall74122211111" arcHeight="5.0" arcWidth="5.0" fill="#726868" height="32.0" layoutX="160.0" layoutY="256.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+      <Rectangle fx:id="wall711" arcHeight="5.0" arcWidth="5.0" fill="#726868" height="32.0" layoutX="224.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+      <Rectangle fx:id="wall7111" arcHeight="5.0" arcWidth="5.0" fill="#726868" height="32.0" layoutX="256.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+      <Rectangle fx:id="wall71111" arcHeight="5.0" arcWidth="5.0" fill="#726868" height="32.0" layoutX="256.0" layoutY="32.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+      <Rectangle fx:id="wall711111" arcHeight="5.0" arcWidth="5.0" fill="#726868" height="32.0" layoutX="256.0" layoutY="64.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+      <Rectangle fx:id="wall7111111" arcHeight="5.0" arcWidth="5.0" fill="#726868" height="32.0" layoutX="256.0" layoutY="96.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+      <Rectangle fx:id="wall71111111" arcHeight="5.0" arcWidth="5.0" fill="#726868" height="32.0" layoutX="192.0" layoutY="96.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+      <Rectangle fx:id="wall711111111" arcHeight="5.0" arcWidth="5.0" fill="#726868" height="32.0" layoutX="256.0" layoutY="256.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+      <Rectangle fx:id="wall7111111111" arcHeight="5.0" arcWidth="5.0" fill="#726868" height="32.0" layoutX="256.0" layoutY="224.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+      <Rectangle fx:id="wall71111111111" arcHeight="5.0" arcWidth="5.0" fill="#726868" height="32.0" layoutX="256.0" layoutY="128.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+      <Rectangle fx:id="wall711111111111" arcHeight="5.0" arcWidth="5.0" fill="#726868" height="32.0" layoutX="256.0" layoutY="192.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+      <Rectangle fx:id="wallI" arcHeight="5.0" arcWidth="5.0" fill="#726868" height="32.0" layoutX="224.0" layoutY="256.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+      <Rectangle fx:id="wall741211" arcHeight="5.0" arcWidth="5.0" fill="#726868" height="32.0" layoutX="160.0" layoutY="160.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+      <Rectangle fx:id="wall7412111" arcHeight="5.0" arcWidth="5.0" fill="#726868" height="32.0" layoutX="160.0" layoutY="192.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+      <Rectangle fx:id="wall74121111" arcHeight="5.0" arcWidth="5.0" fill="#726868" height="32.0" layoutX="192.0" layoutY="160.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+      <Rectangle fx:id="wall74121112" arcHeight="5.0" arcWidth="5.0" fill="#726868" height="32.0" layoutX="160.0" layoutY="224.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+      <Rectangle fx:id="wall7412112" arcHeight="5.0" arcWidth="5.0" fill="#726868" height="32.0" layoutX="128.0" layoutY="160.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+      <Pane layoutX="128.0" layoutY="64.0" prefHeight="32.0" prefWidth="32.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cd8a39" height="9.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="24.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+         </children>
+      </Pane>
+      <Pane layoutX="160.0" layoutY="64.0" prefHeight="32.0" prefWidth="32.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cd8a39" height="9.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="24.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+         </children>
+      </Pane>
+      <Pane layoutX="192.0" layoutY="64.0" prefHeight="32.0" prefWidth="32.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cd8a39" height="9.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle  arcHeight="5.0" arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle  arcHeight="5.0" arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="24.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+         </children>
+      </Pane>
+      <Pane layoutX="224.0" layoutY="64.0" prefHeight="32.0" prefWidth="32.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cd8a39" height="9.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="24.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+         </children>
+      </Pane>
+      <Pane layoutX="224.0" layoutY="32.0" prefHeight="32.0" prefWidth="32.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cd8a39" height="9.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="24.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+         </children>
+      </Pane>
+      <Pane layoutX="192.0" layoutY="32.0" prefHeight="32.0" prefWidth="32.0">
+         <children>
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="24.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+         </children>
+      </Pane>
+      <Pane layoutX="160.0" layoutY="32.0" prefHeight="32.0" prefWidth="32.0">
+         <children>
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="24.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+         </children>
+      </Pane>
+      <Pane layoutX="224.0" layoutY="96.0" prefHeight="32.0" prefWidth="32.0">
+         <children>
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="24.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+         </children>
+      </Pane>
+      <Pane layoutX="224.0" layoutY="128.0" prefHeight="32.0" prefWidth="32.0">
+         <children>
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="24.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+         </children>
+      </Pane>
+      <Pane layoutX="224.0" layoutY="160.0" prefHeight="32.0" prefWidth="32.0">
+         <children>
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="24.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+         </children>
+      </Pane>
+      <Pane layoutX="224.0" layoutY="192.0" prefHeight="32.0" prefWidth="32.0">
+         <children>
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="24.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+         </children>
+      </Pane>
+      <Pane layoutX="256.0" layoutY="160.0" prefHeight="32.0" prefWidth="32.0">
+         <children>
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="24.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+         </children>
+      </Pane>
+      <Pane layoutX="224.0" layoutY="224.0" prefHeight="32.0" prefWidth="32.0">
+         <children>
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="24.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+         </children>
+      </Pane>
+      <Pane layoutX="192.0" layoutY="224.0" prefHeight="32.0" prefWidth="32.0">
+         <children>
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="24.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+         </children>
+      </Pane>
+      <Pane layoutX="192.0" layoutY="256.0" prefHeight="32.0" prefWidth="32.0">
+         <children>
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="24.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+         </children>
+      </Pane>
+      <Pane layoutX="192.0" layoutY="192.0" prefHeight="32.0" prefWidth="32.0">
+         <children>
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="24.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+         </children>
+      </Pane>
+      <Pane layoutX="192.0" layoutY="128.0" prefHeight="32.0" prefWidth="32.0">
+         <children>
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="24.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+         </children>
+      </Pane>
+      <Pane layoutX="160.0" layoutY="128.0" prefHeight="32.0" prefWidth="32.0">
+         <children>
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="24.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+         </children>
+      </Pane>
+      <Pane layoutX="128.0" layoutY="128.0" prefHeight="32.0" prefWidth="32.0">
+         <children>
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="24.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+         </children>
+      </Pane>
+      <Pane layoutX="96.0" layoutY="128.0" prefHeight="32.0" prefWidth="32.0">
+         <children>
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="24.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+         </children>
+      </Pane>
+      <Pane layoutX="64.0" layoutY="128.0" prefHeight="32.0" prefWidth="32.0">
+         <children>
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="24.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+         </children>
+      </Pane>
+      <Pane layoutX="64.0" layoutY="160.0" prefHeight="32.0" prefWidth="32.0">
+         <children>
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="24.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+         </children>
+      </Pane>
+      <Pane layoutX="96.0" layoutY="160.0" prefHeight="32.0" prefWidth="32.0">
+         <children>
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="24.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+         </children>
+      </Pane>
+      <Pane layoutX="128.0" layoutY="192.0" prefHeight="32.0" prefWidth="32.0">
+         <children>
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="24.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+         </children>
+      </Pane>
+      <Pane layoutX="64.0" layoutY="192.0" prefHeight="32.0" prefWidth="32.0">
+         <children>
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="24.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+         </children>
+      </Pane>
+      <Pane layoutX="96.0" layoutY="192.0" prefHeight="32.0" prefWidth="32.0">
+         <children>
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="24.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+         </children>
+      </Pane>
+      <Pane layoutX="128.0" layoutY="224.0" prefHeight="32.0" prefWidth="32.0">
+         <children>
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="24.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+         </children>
+      </Pane>
+      <Pane layoutX="128.0" layoutY="256.0" prefHeight="32.0" prefWidth="32.0">
+         <children>
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="24.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+         </children>
+      </Pane>
+      <Pane layoutX="32.0" layoutY="224.0" prefHeight="32.0" prefWidth="32.0">
+         <children>
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="24.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+         </children>
+      </Pane>
+      <Pane layoutX="64.0" layoutY="224.0" prefHeight="32.0" prefWidth="32.0">
+         <children>
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="24.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+         </children>
+      </Pane>
+      <Pane layoutX="96.0" layoutY="224.0" prefHeight="32.0" prefWidth="32.0">
+         <children>
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcWidth="5.0" fill="#cd8a39" height="9.0" layoutY="24.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+         </children>
+      </Pane>
+      <Rectangle fx:id="wallA" arcHeight="5.0" arcWidth="5.0" fill="#726868" height="32.0" layoutY="256.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="128.0" />
+      <Rectangle fx:id="wallB" arcHeight="5.0" arcWidth="5.0" fill="#726868" height="128.0" layoutX="160.0" layoutY="160.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+      <Rectangle fx:id="wallC" arcHeight="5.0" arcWidth="5.0" fill="#726868" height="32.0" layoutX="128.0" layoutY="160.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="96.0" />
+      <Rectangle fx:id="wallD" arcHeight="5.0" arcWidth="5.0" fill="#726868" height="32.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="288.0" />
+      <Rectangle fx:id="wallE" arcHeight="5.0" arcWidth="5.0" fill="#726868" height="128.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+      <Rectangle fx:id="wallF" arcHeight="5.0" arcWidth="5.0" fill="#726868" height="128.0" layoutX="32.0" layoutY="96.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+      <Rectangle fx:id="wallG" arcHeight="5.0" arcWidth="5.0" fill="#726868" height="96.0" layoutY="192.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+      <Rectangle fx:id="wallH" arcHeight="5.0" arcWidth="5.0" fill="#726868" height="96.0" layoutX="256.0" layoutY="192.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+      <Rectangle fx:id="wallK" arcHeight="5.0" arcWidth="5.0" fill="#726868" height="160.0" layoutX="256.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="32.0" />
+      <Rectangle fx:id="wallM" arcHeight="5.0" arcWidth="5.0" fill="#726868" height="32.0" layoutX="96.0" layoutY="96.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="128.0" />
+   </children>
+</Pane>

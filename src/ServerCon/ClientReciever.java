@@ -150,6 +150,12 @@ public class ClientReciever extends Thread {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+                        break;
+                    case "RELOAD":
+                        if (ClientCommandHandler.getPlayerClient().getName().equals(respond)) {
+                            Platform.runLater(() ->ClientCommandHandler.getPlayerClient().reload());
+                        }
+                        break;
                     case "LOADPLR":
                         key = respond.split("\\^")[0];
                         Human obj;
@@ -225,7 +231,7 @@ public class ClientReciever extends Thread {
                         Moves move = Moves.valueOf(respond.split("\\^")[0]);
                         respond = respond.replace(move+"^", "");
                         Human player2 = ClientCommandHandler.joinedPlayers.get(respond);
-                        player2.moveOther(move);
+                        Platform.runLater(() -> player2.moveOther(move));
                         break;
                 }
             }

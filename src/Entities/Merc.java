@@ -12,8 +12,6 @@ import java.time.LocalDateTime;
 
 public class Merc extends Human {
 
-    transient private int ammo = 60;
-
     {
         setHealth(150);
     }
@@ -27,23 +25,7 @@ public class Merc extends Human {
     }
 
     public void show() {
-        Pane root = null;
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Merc.fxml"));
-        try {
-            root = loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(-1);
-        }
-        setCol_rec(((HumanController) loader.getController()).getCol_rec());
-        setTranslateY(getLocation().getY());
-        setTranslateX(getLocation().getX());
-
-        Label nm = new Label(getName());
-
-        setOrientation(Orientation.VERTICAL);
-        getChildren().addAll(nm, root);
-
+        super.show("Merc.fxml");
     }
 
     public Merc(String name, Location location) {

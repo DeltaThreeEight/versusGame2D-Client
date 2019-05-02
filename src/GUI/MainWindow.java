@@ -22,8 +22,6 @@ public class MainWindow extends AnchorPane {
     private AnchorPane root;
     private Scene scene;
 
-    private Image image1 = new Image(getClass().getResourceAsStream("map.png"));
-    private ImageView imageView1 = new ImageView(image1);
     private MainController mainController;
 
     public MainWindow() {

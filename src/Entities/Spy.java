@@ -19,27 +19,13 @@ public class Spy extends Human {
     public Spy(String name) {
         super(name);
         if (Math.random() > 0.5)
-            getLocation().setXY(270,270);
+            getLocation().setXY(270,350);
         else
-            getLocation().setXY(20,270);
+            getLocation().setXY(20,350);
     }
 
     public void show() {
-        Pane root = null;
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Spy.fxml"));
-        try {
-            root = loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(-1);
-        }
-        setCol_rec(((HumanController) loader.getController()).getCol_rec());
-        setTranslateY(getLocation().getY());
-        setTranslateX(getLocation().getX());
-
-        Label nm = new Label(getName());
-        setOrientation(Orientation.VERTICAL);
-        getChildren().addAll(nm, root);
+        super.show("Spy.fxml");
     }
 
     public Spy(String name, Location location) {

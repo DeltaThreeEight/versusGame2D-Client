@@ -10,12 +10,12 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<Pane prefHeight="32.0" prefWidth="23.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controllers.HumanController">
+<Pane prefHeight="32.0" prefWidth="32.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controllers.HumanController">
    <children>
-      <Ellipse layoutX="11.0" layoutY="15.0" radiusX="7.0" radiusY="10.0" stroke="BLACK" strokeType="INSIDE" />
-      <Rectangle fx:id="col_rec" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" layoutX="3.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="16.0" />
-      <Ellipse layoutX="11.0" layoutY="26.0" radiusX="4.0" radiusY="3.0" stroke="BLACK" strokeType="INSIDE" />
-      <Ellipse layoutX="11.0" layoutY="5.0" radiusX="4.0" radiusY="3.0" stroke="BLACK" strokeType="INSIDE" />
-      <Ellipse fill="#726666" layoutX="11.0" layoutY="14.0" radiusX="5.0" radiusY="5.0" stroke="BLACK" strokeType="INSIDE" />
+      <Ellipse fx:id="body" layoutX="16.0" layoutY="16.0" radiusX="7.0" radiusY="10.0" stroke="BLACK" strokeType="INSIDE" />
+      <Rectangle fx:id="col_rec" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="18.0" layoutX="7.0" layoutY="7.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="18.0" />
+      <Ellipse fx:id="right_hand" layoutX="16.0" layoutY="26.0" radiusX="4.0" radiusY="3.0" stroke="BLACK" strokeType="INSIDE" />
+      <Ellipse fx:id="left_hand" layoutX="16.0" layoutY="6.0" radiusX="4.0" radiusY="3.0" stroke="BLACK" strokeType="INSIDE" />
+      <Ellipse fx:id="head" fill="#c4400c" layoutX="16.0" layoutY="16.0" radiusX="5.0" radiusY="5.0" stroke="BLACK" strokeType="INSIDE" />
    </children>
 </Pane>
