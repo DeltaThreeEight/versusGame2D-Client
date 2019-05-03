@@ -37,6 +37,9 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
     protected Ellipse head;
     protected Ellipse right_hand;
     protected Ellipse left_hand;
+    protected Rectangle right_arm;
+    protected Rectangle left_arm;
+    protected Rectangle gun;
     protected Pane root;
 
     public Moves getLastMove() {
@@ -108,6 +111,35 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
         getChildren().addAll(nm, root);
         if (getLastMove() == Moves.FORWARD || getLastMove() == Moves.BACK)
             rotare(true);
+
+        left_arm = new Rectangle();
+        left_arm.setFill(Paint.valueOf("#303336"));
+        left_arm.setStroke(Paint.valueOf("BLACK"));
+        left_arm.setSmooth(true);
+        left_arm.setArcWidth(5);
+        left_arm.setArcHeight(5);
+        left_arm.setWidth(5);
+        left_arm.setHeight(17);
+        left_arm.setRotate(-45);
+
+        right_arm = new Rectangle();
+        right_arm.setFill(Paint.valueOf("#303336"));
+        right_arm.setStroke(Paint.valueOf("BLACK"));
+        right_arm.setSmooth(true);
+        right_arm.setArcWidth(5);
+        right_arm.setArcHeight(5);
+        right_arm.setWidth(5);
+        right_arm.setHeight(17);
+        right_arm.setRotate(45);
+
+        gun = new Rectangle();
+        gun.setFill(Paint.valueOf("#4d3232"));
+        gun.setStroke(Paint.valueOf("BLACK"));
+        gun.setSmooth(true);
+        gun.setArcWidth(5);
+        gun.setArcHeight(5);
+        gun.setWidth(8);
+        gun.setHeight(6);
     }
 
     public void hide() {
@@ -129,6 +161,10 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
                 if (move == Moves.BACK || move == Moves.FORWARD) {
                     // do nothing
                 } else rotare(false);
+            }
+
+            if (root.getChildren().contains(gun)) {
+                root.getChildren().removeAll(left_arm, right_arm, gun);
             }
 
             lastMove = move;
@@ -241,7 +277,9 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
                     // do nothing
                 } else rotare(false);
             }
-
+            if (root.getChildren().contains(gun)) {
+                root.getChildren().removeAll(left_arm, right_arm, gun);
+            }
             lastMove = move;
 
             setTranslateY(getTranslateY() + move.getY() * speedModifier);
@@ -260,13 +298,32 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
 
     public void shootOther() {
         if (ammo > 0) {
+            shootAnim();
+
             System.out.println("SHOOT");
             final Shape bullet = new Circle(2, Color.ORANGE);
             ClientCommandHandler.mainWindow.getMainController().getGraphics().getChildren().add(bullet);
             final TranslateTransition bulletAnimation = new TranslateTransition(Duration.seconds(2), bullet);
 
-            ((Circle) bullet).setCenterX(getLocation().getX() + 16);
-            ((Circle) bullet).setCenterY(getLocation().getY() + 32);
+            int modx = 0;
+            int mody = 0;
+            switch (lastMove) {
+                case LEFT:
+                    modx = -16;
+                    break;
+                case RIGHT:
+                    modx = 16;
+                    break;
+                case FORWARD:
+                    mody = 16;
+                    break;
+                case BACK:
+                    mody = -16;
+                    break;
+            }
+
+            ((Circle) bullet).setCenterX(getLocation().getX() + 16 + modx);
+            ((Circle) bullet).setCenterY(getLocation().getY() + 32 + mody);
 
             bulletAnimation.setToX(getLastMove().getX() * 1000);
             bulletAnimation.setToY(getLastMove().getY() * 1000);
@@ -322,17 +379,92 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
         ClientCommandHandler.getAmmo_amount().setText(ammo+"");
     }
 
+    public void shootAnim() {
+
+        switch (lastMove) {
+            case RIGHT:
+                left_arm.setLayoutX(20);
+                left_arm.setLayoutY(2);
+                right_arm.setLayoutX(20);
+                right_arm.setLayoutY(13);
+                gun.setLayoutX(24);
+                gun.setLayoutY(13);
+                gun.setWidth(8);
+                gun.setHeight(6);
+                break;
+            case LEFT:
+                left_arm.setLayoutX(6);
+                left_arm.setLayoutY(12);
+                right_arm.setLayoutX(6);
+                right_arm.setLayoutY(3);
+                gun.setLayoutX(0);
+                gun.setLayoutY(13);
+                gun.setWidth(8);
+                gun.setHeight(6);
+                break;
+            case FORWARD:
+                left_arm.setLayoutX(6);
+                left_arm.setLayoutY(12);
+                right_arm.setLayoutX(20);
+                right_arm.setLayoutY(13);
+                gun.setLayoutX(12);
+                gun.setLayoutY(25);
+                gun.setWidth(6);
+                gun.setHeight(8);
+                break;
+            case BACK:
+                left_arm.setLayoutX(20);
+                left_arm.setLayoutY(2);
+                right_arm.setLayoutX(6);
+                right_arm.setLayoutY(3);
+                gun.setLayoutX(12);
+                gun.setLayoutY(0);
+                gun.setWidth(6);
+                gun.setHeight(8);
+                break;
+        }
+
+        if (!root.getChildren().contains(gun)) {
+            root.getChildren().addAll(left_arm);
+            left_arm.toBack();
+
+            root.getChildren().addAll(right_arm);
+            right_arm.toBack();
+
+            root.getChildren().addAll(gun);
+        }
+    }
+
     public void shoot() {
         if (ammo > 0) {
             ammo--;
+            shootAnim();
             ClientCommandHandler.getAmmo_amount().setText(ammo+"");
             ClientCommandHandler.dH.executeCommand(new Command("shoot"));
             System.out.println("SHOOT");
             final Shape bullet = new Circle(2, Color.ORANGE);
             ClientCommandHandler.mainWindow.getMainController().getGraphics().getChildren().add(bullet);
             final TranslateTransition bulletAnimation = new TranslateTransition(Duration.seconds(2), bullet);
-            ((Circle) bullet).setCenterX(getLocation().getX() + 16);
-            ((Circle) bullet).setCenterY(getLocation().getY() + 32);
+
+            int modx = 0;
+            int mody = 0;
+            switch (lastMove) {
+                case LEFT:
+                    modx = -16;
+                    break;
+                case RIGHT:
+                    modx = 16;
+                    break;
+                case FORWARD:
+                    mody = 16;
+                    break;
+                case BACK:
+                    mody = -16;
+                    break;
+            }
+
+            ((Circle) bullet).setCenterX(getLocation().getX() + 16 + modx);
+            ((Circle) bullet).setCenterY(getLocation().getY() + 34 + mody);
 
             bulletAnimation.setToX(getLastMove().getX() * 1000);
             bulletAnimation.setToY(getLastMove().getY() * 1000);

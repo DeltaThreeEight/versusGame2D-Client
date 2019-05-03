@@ -24,6 +24,8 @@ public class ClientCommandHandler {
     static String authToken = null;
     public static ClientCommandHandler dH;
     public static MainWindow mainWindow;
+    public static String AUTH_SUCCESS;
+    public static String REG_SUCCESS;
     private Stage token_window;
     private ObjectOutputStream writer;
     private static boolean isAuth = false;

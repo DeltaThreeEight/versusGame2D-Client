@@ -14,8 +14,8 @@
    <children>
       <Ellipse fx:id="body" layoutX="16.0" layoutY="16.0" radiusX="7.0" radiusY="10.0" stroke="BLACK" strokeType="INSIDE" />
       <Rectangle fx:id="col_rec" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="18.0" layoutX="7.0" layoutY="7.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="18.0" />
-      <Ellipse fx:id="right_hand" layoutX="16.0" layoutY="26.0" radiusX="4.0" radiusY="3.0" stroke="BLACK" strokeType="INSIDE" />
-      <Ellipse fx:id="left_hand" layoutX="16.0" layoutY="6.0" radiusX="4.0" radiusY="3.0" stroke="BLACK" strokeType="INSIDE" />
+      <Ellipse fx:id="right_hand" fill="#303336" layoutX="16.0" layoutY="26.0" radiusX="4.0" radiusY="3.0" stroke="BLACK" strokeType="INSIDE" />
+      <Ellipse fx:id="left_hand" fill="#303336" layoutX="16.0" layoutY="6.0" radiusX="4.0" radiusY="3.0" stroke="BLACK" strokeType="INSIDE" />
       <Ellipse fx:id="head" fill="#c4400c" layoutX="16.0" layoutY="16.0" radiusX="5.0" radiusY="5.0" stroke="BLACK" strokeType="INSIDE" />
    </children>
 </Pane>

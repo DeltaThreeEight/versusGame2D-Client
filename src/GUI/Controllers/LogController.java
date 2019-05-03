@@ -3,6 +3,7 @@ package GUI.Controllers;
 import GUI.Main;
 import ServerCon.ClientCommandHandler;
 import Server.Command;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -55,6 +56,7 @@ public class LogController {
 
     @FXML
     public void hide() {
-
+        Main.getMain().getPrimaryStage().setScene(Main.getMain().getPrimaryScene());
+        Main.getMain().getPrimaryStage().setOnCloseRequest(event2 -> System.exit(0));
     }
 }

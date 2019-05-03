@@ -26,6 +26,7 @@ public class Main extends Application {
     private int port = 8901;
     private ResourceBundle rb;
     private Locale locale;
+    private static String INFORMATION;
 
     public Main(int port, String host) {
         this.port = port;
@@ -37,6 +38,10 @@ public class Main extends Application {
     }
 
     public Main() { }
+
+    public Locale getLocale() {
+        return locale;
+    }
 
     public void start(Stage stages) {
         this.port = main.port;
@@ -148,17 +153,21 @@ public class Main extends Application {
             case "English":
                 locale = new Locale("en", "US");
                 break;
+            case "Japanese":
+                locale = new Locale("ja", "JP");
+                break;
         }
         rb = ResourceBundle.getBundle("text", locale);
+        INFORMATION = rb.getString("information");
     }
 
     public static void showAlert(String text) {
         Alert dialog = new Alert(Alert.AlertType.INFORMATION);
         dialog.initStyle(StageStyle.UTILITY);
-        dialog.setTitle("Information");
+        dialog.setTitle(INFORMATION);
         dialog.setHeaderText(text);
-        if (text.trim().equals("Авторизация успешна!") || text.trim().equals("Authorization successful!")
-                || text.trim().equals("Почта подтверждена!") || text.trim().equals("Email is confirmed!"))
+        if (text.trim().equals(ClientCommandHandler.AUTH_SUCCESS) ||
+                text.trim().equals(ClientCommandHandler.REG_SUCCESS))
             showMainScreen();
         dialog.show();
     }

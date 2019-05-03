@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.layout.*?>
+
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="468.0" prefWidth="804.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controllers.MainController">
    <children>
       <Pane fx:id="graphics" layoutX="253.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="466.0" prefWidth="344.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="253.0" AnchorPane.rightAnchor="207.0" AnchorPane.topAnchor="0.0">
@@ -20,7 +23,7 @@
             </ScrollPane>
             <Label fx:id="usr_prsn" alignment="TOP_CENTER" layoutX="3.0" layoutY="286.0" prefHeight="25.0" prefWidth="245.0" text="Персонаж не выбран" textAlignment="CENTER" AnchorPane.bottomAnchor="155.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="4.0" />
             <Button fx:id="btn_sel" layoutX="15.0" layoutY="324.0" mnemonicParsing="false" onAction="#select" prefHeight="31.0" prefWidth="95.0" text="Выбрать" AnchorPane.bottomAnchor="111.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="142.0" />
-            <Button fx:id="btn_stat" layoutX="142.0" layoutY="324.0" mnemonicParsing="false" onAction="#stats" text="Статистика" AnchorPane.bottomAnchor="111.0" AnchorPane.leftAnchor="142.0" AnchorPane.rightAnchor="15.0" />
+            <Button fx:id="btn_stat" layoutX="142.0" layoutY="324.0" mnemonicParsing="false" onAction="#stats" prefHeight="31.0" prefWidth="95.0" text="Статистика" AnchorPane.bottomAnchor="111.0" AnchorPane.leftAnchor="142.0" AnchorPane.rightAnchor="15.0" />
             <Button fx:id="btn_create" layoutX="15.0" layoutY="375.0" mnemonicParsing="false" onAction="#create" prefHeight="31.0" prefWidth="95.0" text="Создать" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="142.0" />
             <Button fx:id="btn_del" layoutX="142.0" layoutY="375.0" mnemonicParsing="false" onAction="#delete" prefHeight="31.0" prefWidth="95.0" text="Удалить" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="142.0" AnchorPane.rightAnchor="15.0" />
          </children>

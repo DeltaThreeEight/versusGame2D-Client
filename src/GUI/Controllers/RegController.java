@@ -62,9 +62,9 @@ public class RegController {
         login.setPromptText(log);
         String mail = rb.getString("reg_email");
         email.setPromptText(mail);
-        String pas = rb.getString("reg_pass");
+        String pas = rb.getString("reg_pass2");
         pass.setPromptText(pas);
-        String pas2 = rb.getString("reg_pass2");
+        String pas2 = rb.getString("reg_pass");
         pass2.setPromptText(pas2);
         String cnl = rb.getString("cnl_btn");
         cnl_btn.setText(cnl);
@@ -80,6 +80,7 @@ public class RegController {
 
     @FXML
     public void hide() {
-
+        Main.getMain().getPrimaryStage().setScene(Main.getMain().getPrimaryScene());
+        Main.getMain().getPrimaryStage().setOnCloseRequest(event2 -> System.exit(0));
     }
 }

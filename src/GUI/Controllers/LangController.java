@@ -28,7 +28,7 @@ public class LangController {
     }
 
     public void init() {
-        ObservableList<String> lngs = FXCollections.observableArrayList("English", "Russian");
+        ObservableList<String> lngs = FXCollections.observableArrayList("English", "Russian", "Japanese");
         langs.setItems(lngs);
         langs.setValue("Russian");
     }

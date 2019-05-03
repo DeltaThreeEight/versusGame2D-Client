@@ -12,6 +12,8 @@ import javafx.stage.Stage;
 import java.io.EOFException;
 import java.io.ObjectInputStream;
 import java.net.SocketException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -42,6 +44,7 @@ public class ClientReciever extends Thread {
     private final String WRONG_TOKEN = rb.getString("wrong_token");
     private final String UNCONF_TOKEN = rb.getString("unconf_token");
     private final String DEF_PERSON = rb.getString("def_prsn");
+    private final String PERSON_KILLED = rb.getString("person_killed");
 
     private ObjectInputStream inputStream;
 
@@ -51,6 +54,8 @@ public class ClientReciever extends Thread {
 
     public void run() {
         try {
+            ClientCommandHandler.AUTH_SUCCESS = AUTH_SUCCESS;
+            ClientCommandHandler.REG_SUCCESS = REG_SUCCESS;
             String respond;
             String action;
             ArrayList<String> persons = null;
@@ -143,10 +148,11 @@ public class ClientReciever extends Thread {
                     case "STATS":
                         try {
                             Human person = (Human) inputStream.readObject();
+                            DateTimeFormatter format = DateTimeFormatter.ofPattern("H:m d MMMM yyyy", Main.getMain().getLocale());
                             Platform.runLater(() -> Main.showAlert(String.format
                                     ("%s: %s%n" +
                                     "%s: %s%n" +
-                                            "%s: %s", NAME, person.getName(), HEALTH, person.getHealth(), CREATION_DATE, person.getDate())));
+                                            "%s: %s", NAME, person.getName(), HEALTH, person.getHealth(), CREATION_DATE, person.getDate().format(format))));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -212,19 +218,17 @@ public class ClientReciever extends Thread {
                         break;
                     case "SHOOT":
                         Human playerShoot = ClientCommandHandler.joinedPlayers.get(respond);
-                        Platform.runLater(() -> playerShoot.shootOther());
+                        Platform.runLater(playerShoot::shootOther);
                         break;
                     case "KILLPLAYER":
                         if (ClientCommandHandler.getPlayerClient() != null && respond.equals(ClientCommandHandler.getPlayerClient().getName())) {
                             Platform.runLater( () -> {
-                                Main.showAlert("Ваш персонаж убит");
+                                Main.showAlert(PERSON_KILLED);
                                 ClientCommandHandler.setPlayerNull();
                             });
                         } else {
                             Human killed = ClientCommandHandler.joinedPlayers.get(respond);
-                            Platform.runLater( () -> {
-                                killed.hide();
-                            });
+                            Platform.runLater(killed::hide);
                         }
                         break;
                     case "MOVPLAYER":
