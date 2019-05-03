@@ -167,7 +167,7 @@ public class Main extends Application {
         dialog.setTitle(INFORMATION);
         dialog.setHeaderText(text);
         if (text.trim().equals(ClientCommandHandler.AUTH_SUCCESS) ||
-                text.trim().equals(ClientCommandHandler.REG_SUCCESS))
+                text.trim().equals(ClientCommandHandler.EMAIL_CONF))
             showMainScreen();
         dialog.show();
     }

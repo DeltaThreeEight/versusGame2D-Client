@@ -172,6 +172,19 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
         }
     }
 
+    public static void kill(double x, double y) {
+        Ellipse ell = new Ellipse();
+        ell.setRadiusY(12);
+        ell.setRadiusX(15);
+        ell.setStroke(Paint.valueOf("BLACK"));
+        ell.setFill(Paint.valueOf("#d30000"));
+        ell.setCenterX(x+16);
+        ell.setCenterY(y+35);
+        ClientCommandHandler.mainWindow.getMap().getChildren().addAll(ell);
+        ell.toBack();
+        ClientCommandHandler.mainWindow.getHouseFloor().toBack();
+    }
+
     public void teleportOther(double x, double y) {
         setTranslateX(x);
         setTranslateY(y);

@@ -26,7 +26,9 @@ public class TokenController {
 
     public void localize() {
         ResourceBundle rb = Main.getMain().getRb();
-        String tok_field = rb.getString("reg_login");
-        token_field.setPromptText(tok_field);
+        String tok_lbl = rb.getString("input_token");
+        token_lbl.setText(tok_lbl);
+        String tok_btn = rb.getString("enter");
+        token_btn.setText(tok_btn);
     }
 }

@@ -2,11 +2,14 @@ package GUI.Controllers;
 
 import Entities.BigWall;
 import javafx.fxml.FXML;
+import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
 
 public class MapController {
+    @FXML
+    private Pane house_floor;
     @FXML
     private Rectangle wallA;
     @FXML
@@ -47,5 +50,9 @@ public class MapController {
         a.add(new BigWall(wallM));
         a.add(new BigWall(wallN));
         return a;
+    }
+
+    public Pane getHouseFloor() {
+        return house_floor;
     }
 }

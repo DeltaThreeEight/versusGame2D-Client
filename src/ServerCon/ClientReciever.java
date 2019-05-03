@@ -55,7 +55,7 @@ public class ClientReciever extends Thread {
     public void run() {
         try {
             ClientCommandHandler.AUTH_SUCCESS = AUTH_SUCCESS;
-            ClientCommandHandler.REG_SUCCESS = REG_SUCCESS;
+            ClientCommandHandler.EMAIL_CONF = EMAIL_CONF;
             String respond;
             String action;
             ArrayList<String> persons = null;
@@ -117,6 +117,11 @@ public class ClientReciever extends Thread {
                     case "AUTH":
                         ClientCommandHandler.setIsAuth(true);
                         ClientCommandHandler.authToken = respond;
+                        break;
+                    case "LOADPUDDLE":
+                        double xp = Double.parseDouble(respond.split(" ")[0]);
+                        double yp = Double.parseDouble(respond.split(" ")[1]);
+                        Platform.runLater(() ->Human.kill(xp, yp));
                         break;
                     case "SENDTOKEN":
                         Platform.runLater(() -> {
@@ -234,12 +239,16 @@ public class ClientReciever extends Thread {
                         if (ClientCommandHandler.getPlayerClient() != null && respond.equals(ClientCommandHandler.getPlayerClient().getName())) {
                             Platform.runLater( () -> {
                                 Main.showAlert(PERSON_KILLED);
+                                Human.kill(ClientCommandHandler.getPlayerClient().getLocation().getX(), ClientCommandHandler.getPlayerClient().getLocation().getY());
                                 ClientCommandHandler.mainWindow.getMainController().setSelectedPerson(DEF_PERSON);
                                 ClientCommandHandler.setPlayerNull();
                             });
                         } else {
                             Human killed = ClientCommandHandler.joinedPlayers.get(respond);
-                            Platform.runLater(killed::hide);
+                            Platform.runLater(() -> {
+                                Human.kill(killed.getLocation().getX(), killed.getLocation().getY());
+                                killed.hide();
+                            });
                         }
                         break;
                     case "MOVPLAYER":
@@ -292,7 +301,7 @@ public class ClientReciever extends Thread {
                 return PERSON_REMOVED;
             case "EXPIRED_TOKEN":
                 return EXPIRED_TOKEN;
-            case "EXPIRED_REGISTRATION_TOKEN":
+            case "EXPIRED_REG_TOKEN":
                 return EXPIRED_REGISTRATION_TOKEN;
             case "EMAIL_CONF":
                 return EMAIL_CONF;

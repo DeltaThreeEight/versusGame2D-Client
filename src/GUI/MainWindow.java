@@ -21,6 +21,8 @@ import java.util.ArrayList;
 public class MainWindow extends AnchorPane {
     private AnchorPane root;
     private Scene scene;
+    private Pane map;
+    private Pane house_floor;
 
     private MainController mainController;
 
@@ -104,20 +106,26 @@ public class MainWindow extends AnchorPane {
     }
 
     private void loadMap(Pane graphics) {
-        Pane root = null;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/Map.fxml"));
         try {
-            root = loader.load();
+            map = loader.load();
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(-1);
         }
-
+        house_floor = ((MapController) loader.getController()).getHouseFloor();
         ArrayList<BigWall> a = ((MapController) loader.getController()).getAllWalls();
 
-        graphics.getChildren().addAll(root);
+        graphics.getChildren().addAll(map);
         graphics.getChildren().addAll(a);
         graphics.setStyle("-fx-background-color: green;");
     }
 
+    public Pane getMap() {
+        return map;
+    }
+
+    public Pane getHouseFloor() {
+        return house_floor;
+    }
 }
