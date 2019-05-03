@@ -7,6 +7,7 @@ import Server.Command;
 import ServerCon.ClientCommandHandler;
 import World.Location;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
@@ -106,6 +107,7 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
 
 
         Label nm = new Label(getName());
+        nm.setTextFill(Paint.valueOf("WHITE"));
         setOrientation(Orientation.VERTICAL);
         setCol_rec(humanController.getCol_rec());
         getChildren().addAll(nm, root);
@@ -153,26 +155,20 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
 
     public void moveOther(Moves move) {
         if (isAlive()) {
-            if (lastMove == Moves.RIGHT || lastMove == Moves.LEFT) {
-                if (move == Moves.RIGHT || move == Moves.LEFT) {
-                    // do nothing
-                } else rotare(true);
-            } else {
-                if (move == Moves.BACK || move == Moves.FORWARD) {
-                    // do nothing
-                } else rotare(false);
-            }
 
             if (root.getChildren().contains(gun)) {
                 root.getChildren().removeAll(left_arm, right_arm, gun);
             }
 
             lastMove = move;
-
             setTranslateY(getTranslateY() + move.getY() * speedModifier);
             setTranslateX(getTranslateX() + move.getX() * speedModifier);
 
-            loc.setXY(loc.getX() + move.getX() * speedModifier, loc.getY() + move.getY() * speedModifier);
+            boolean intersects = checkIntersects(move);
+
+            if (!intersects) {
+                loc.setXY(loc.getX() + move.getX() * speedModifier, loc.getY() + move.getY() * speedModifier);
+            }
         }
     }
 
@@ -236,7 +232,14 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
         return false;
     }
 
-    protected void rotare(boolean b) {
+    public void setLastMove(Moves move) {
+        lastMove = move;
+    }
+
+    public void rotare(boolean b) {
+        if (root.getChildren().contains(gun)) {
+            Platform.runLater(() -> root.getChildren().removeAll(left_arm, right_arm, gun));
+        }
         if (b) {
             body.setRadiusX(10);
             body.setRadiusY(7);
@@ -271,11 +274,17 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
             if (lastMove == Moves.RIGHT || lastMove == Moves.LEFT) {
                 if (move == Moves.RIGHT || move == Moves.LEFT) {
                     // do nothing
-                } else rotare(true);
+                } else {
+                    ClientCommandHandler.dH.executeCommand(new Command("rotare", move.toString()));
+                    rotare(true);
+                }
             } else {
                 if (move == Moves.BACK || move == Moves.FORWARD) {
                     // do nothing
-                } else rotare(false);
+                } else {
+                    ClientCommandHandler.dH.executeCommand(new Command("rotare", move.toString()));
+                    rotare(false);
+                }
             }
             if (root.getChildren().contains(gun)) {
                 root.getChildren().removeAll(left_arm, right_arm, gun);
@@ -288,9 +297,9 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
             boolean intersects = checkIntersects(move);
 
             if (!intersects) {
-                ClientCommandHandler.dH.executeCommand(new Command("move", move.toString()));
                 loc.setXY(loc.getX() + move.getX() * speedModifier, loc.getY() + move.getY() * speedModifier);
                 System.out.println("Перемещение " + loc);
+                ClientCommandHandler.dH.executeCommand(new Command("move", move.toString()));
             }
         } else System.out.println("Перемещние невозможно");
 

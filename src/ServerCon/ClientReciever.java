@@ -145,6 +145,16 @@ public class ClientReciever extends Thread {
                             e.printStackTrace();
                         }
                         break;
+                    case "ROTARE":
+                        String nameRotare = respond.split("\\^")[0];
+                        String moveRotr = respond.replaceFirst(nameRotare+"\\^", "");
+                        Human humRotare = ClientCommandHandler.joinedPlayers.get(nameRotare);
+                        Moves moveRot = Moves.valueOf(moveRotr);
+                        if (moveRot == Moves.LEFT || moveRot == Moves.RIGHT) {
+                            humRotare.rotare(false);
+                        } else humRotare.rotare(true);
+                        humRotare.setLastMove(moveRot);
+                        break;
                     case "STATS":
                         try {
                             Human person = (Human) inputStream.readObject();
@@ -224,6 +234,7 @@ public class ClientReciever extends Thread {
                         if (ClientCommandHandler.getPlayerClient() != null && respond.equals(ClientCommandHandler.getPlayerClient().getName())) {
                             Platform.runLater( () -> {
                                 Main.showAlert(PERSON_KILLED);
+                                ClientCommandHandler.mainWindow.getMainController().setSelectedPerson(DEF_PERSON);
                                 ClientCommandHandler.setPlayerNull();
                             });
                         } else {
