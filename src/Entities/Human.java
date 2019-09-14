@@ -193,20 +193,18 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
 
     public boolean checkIntersects(Moves move) {
         for (Node n : handler.getMainWindow().getMainController().getGraphics().getChildren()) {
-
             if (n instanceof Human) {
+                Human person = (Human) n;
 
-                Human h = (Human) n;
-
-                if (h != this) {
-                    if (((Path) Shape.intersect(col_rec, h.getCollisionBox())).getElements().size() > 0) {
+                if (person != this) {
+                    if (((Path) Shape.intersect(col_rec, person.getCollisionBox())).getElements().size() > 0) {
 
                         System.out.println("Касание");
 
                         setTranslateY(getTranslateY() - move.getY() * speedModifier);
                         setTranslateX(getTranslateX() - move.getX() * speedModifier);
 
-                        while (((Path) Shape.intersect(col_rec, h.getCollisionBox())).getElements().size() > 0) {
+                        while (((Path) Shape.intersect(col_rec, person.getCollisionBox())).getElements().size() > 0) {
                             teleport(loc.getX() + 5, loc.getY() + 5);
                         }
 
@@ -291,9 +289,11 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
                     rotare(false);
                 }
             }
+
             if (root.getChildren().contains(gun)) {
                 root.getChildren().removeAll(left_arm, right_arm, gun);
             }
+
             lastMove = move;
 
             setTranslateY(getTranslateY() + move.getY() * speedModifier);
@@ -399,42 +399,58 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
             case RIGHT:
                 left_arm.setLayoutX(20);
                 left_arm.setLayoutY(2);
+
                 right_arm.setLayoutX(20);
                 right_arm.setLayoutY(13);
+
                 gun.setLayoutX(24);
                 gun.setLayoutY(13);
+
                 gun.setWidth(8);
                 gun.setHeight(6);
+
                 break;
             case LEFT:
                 left_arm.setLayoutX(6);
                 left_arm.setLayoutY(12);
+
                 right_arm.setLayoutX(6);
                 right_arm.setLayoutY(3);
+
                 gun.setLayoutX(0);
                 gun.setLayoutY(13);
+
                 gun.setWidth(8);
                 gun.setHeight(6);
+
                 break;
             case FORWARD:
                 left_arm.setLayoutX(6);
                 left_arm.setLayoutY(12);
+
                 right_arm.setLayoutX(20);
                 right_arm.setLayoutY(13);
+
                 gun.setLayoutX(12);
                 gun.setLayoutY(25);
+
                 gun.setWidth(6);
                 gun.setHeight(8);
+
                 break;
             case BACK:
                 left_arm.setLayoutX(20);
                 left_arm.setLayoutY(2);
+
                 right_arm.setLayoutX(6);
                 right_arm.setLayoutY(3);
+
                 gun.setLayoutX(12);
                 gun.setLayoutY(0);
+
                 gun.setWidth(6);
                 gun.setHeight(8);
+
                 break;
         }
 
@@ -453,9 +469,13 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
         if (ammo > 0) {
             ammo--;
             shootAnim();
+
             handler.getAmmoAmount().setText(ammo+"");
+
             handler.executeCMD(new ClientCommand("shoot"));
+
             System.out.println("SHOOT");
+
             final Shape bullet = new Circle(2, Color.ORANGE);
 
             MainWindow mainWindow = handler.getMainWindow();
