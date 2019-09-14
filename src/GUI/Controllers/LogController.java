@@ -1,16 +1,14 @@
 package GUI.Controllers;
 
 import GUI.Main;
-import ServerCon.ClientCommandHandler;
-import Server.Command;
-import javafx.application.Platform;
+import Server.Commands.ClientCommand;
+import Network.Connection.ClientCommandHandler;
+import Resources.TextResources;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-
-import java.util.ResourceBundle;
 
 public class LogController {
     @FXML
@@ -25,38 +23,35 @@ public class LogController {
     private Button btn_cnl;
     @FXML
     private Button btn_log;
+    private ClientCommandHandler handler;
+    private Main main;
 
     @FXML
     public void login() {
-        if (pass.getText().trim().equals("")) {
-            Main.showAlert("Введите пароль");
-            return;
-        } else if (login.getText().trim().equals("")) {
-            Main.showAlert("Введите логин");
-            return;
-        }
-        ClientCommandHandler.dH.sendCMD(new Command("login", login.getText(), pass.getText()));
+        handler.executeCMD(new ClientCommand("login", login.getText(), pass.getText()));
+    }
+
+    public void setHandler(ClientCommandHandler handler) {
+        this.handler = handler;
+        this.main = handler.getMain();
     }
 
     public void localize() {
-        ResourceBundle rb = Main.getMain().getRb();
-        String log_field = rb.getString("reg_login");
-        login.setPromptText(log_field);
-        String logl = rb.getString("lbl_login");
-        log_lbl.setText(logl);
-        String passl = rb.getString("lbl_pass");
-        pass_lbl.setText(passl);
-        String pass_field = rb.getString("reg_pass");
-        pass.setPromptText(pass_field);
-        String log_btn = rb.getString("log_btn");
-        btn_log.setText(log_btn);
-        String cnl_btn = rb.getString("cnl_btn");
-        btn_cnl.setText(cnl_btn);
+        TextResources resources = main.getTextResources();
+
+        log_lbl.setText(resources.LBL_LOGIN);
+        pass_lbl.setText(resources.LBL_PASS);
+
+        login.setPromptText(resources.REG_LOGIN);
+        pass.setPromptText(resources.REG_PASS);
+
+        btn_log.setText(resources.LOG_BTN);
+        btn_cnl.setText(resources.CNL_BTN);
     }
 
     @FXML
     public void hide() {
-        Main.getMain().getPrimaryStage().setScene(Main.getMain().getPrimaryScene());
-        Main.getMain().getPrimaryStage().setOnCloseRequest(event2 -> System.exit(0));
+        main.getPrimaryStage().setScene(main.getPrimaryScene());
+        main.getPrimaryStage().setOnCloseRequest(event -> System.exit(0));
     }
 }

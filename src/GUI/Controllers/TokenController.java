@@ -1,14 +1,13 @@
 package GUI.Controllers;
 
 import GUI.Main;
-import ServerCon.ClientCommandHandler;
-import Server.Command;
+import Server.Commands.ClientCommand;
+import Network.Connection.ClientCommandHandler;
+import Resources.TextResources;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-
-import java.util.ResourceBundle;
 
 public class TokenController {
     @FXML
@@ -17,18 +16,24 @@ public class TokenController {
     private Label token_lbl;
     @FXML
     private TextField token_field;
+    private ClientCommandHandler handler;
+    private Main main;
 
     @FXML
-    public void continReg() {
-        ClientCommandHandler.dH.sendCMD(new Command("name", token_field.getText()));
-        ClientCommandHandler.dH.getToken_window().close();
+    public void sendRegistrationToken() {
+        handler.sendCMD(new ClientCommand("name", token_field.getText()));
+        handler.getTokenWindow().close();
     }
 
     public void localize() {
-        ResourceBundle rb = Main.getMain().getRb();
-        String tok_lbl = rb.getString("input_token");
-        token_lbl.setText(tok_lbl);
-        String tok_btn = rb.getString("enter");
-        token_btn.setText(tok_btn);
+        TextResources resources = main.getTextResources();
+
+        token_lbl.setText(resources.INPUT_TOKEN);
+        token_btn.setText(resources.ENTER);
+    }
+
+    public void setHandler(ClientCommandHandler handler) {
+        this.handler = handler;
+        this.main = handler.getMain();
     }
 }

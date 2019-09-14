@@ -3,13 +3,10 @@ package GUI;
 import Entities.*;
 import GUI.Controllers.MainController;
 import GUI.Controllers.MapController;
-import ServerCon.ClientCommandHandler;
-import Server.Command;
+import Server.Commands.ClientCommand;
+import Network.Connection.ClientCommandHandler;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -26,7 +23,7 @@ public class MainWindow extends AnchorPane {
 
     private MainController mainController;
 
-    public MainWindow() {
+    public MainWindow(ClientCommandHandler handler) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/main.fxml"));
         try {
             root = loader.load();
@@ -35,73 +32,48 @@ public class MainWindow extends AnchorPane {
             e.printStackTrace();
             System.exit(-1);
         }
+
+        handler.getMain().setMainController(mainController);
+
         scene = new Scene(root);
+
+        mainController.setHandler(handler);
         mainController.localize();
 
-
-        ClientCommandHandler.dH.executeCommand(new Command("show"));
+        handler.executeCMD(new ClientCommand("show"));
 
         scene.setOnKeyPressed(event -> {
             KeyCode keyCode = event.getCode();
-            if (ClientCommandHandler.getPlayerClient() != null) {
+            if (handler.getPlayerClient() != null) {
                 switch (keyCode) {
                     case W:
-                        ClientCommandHandler.getPlayerClient().move(Moves.BACK);
+                        handler.getPlayerClient().move(Moves.BACK);
                         break;
                     case S:
-                        ClientCommandHandler.getPlayerClient().move(Moves.FORWARD);
+                        handler.getPlayerClient().move(Moves.FORWARD);
                         break;
                     case A:
-                        ClientCommandHandler.getPlayerClient().move(Moves.LEFT);
+                        handler.getPlayerClient().move(Moves.LEFT);
                         break;
                     case D:
-                        ClientCommandHandler.getPlayerClient().move(Moves.RIGHT);
+                        handler.getPlayerClient().move(Moves.RIGHT);
                         break;
                     case F:
-                        ClientCommandHandler.getPlayerClient().shoot();
+                        handler.getPlayerClient().shoot();
                         break;
                 }
             }
         });
 
-
         Pane graphics = mainController.getGraphics();
         loadMap(graphics);
-    }
-
-    public void camera(){
-        Pane graphics = mainController.getGraphics();
-        double WIDTH = graphics.getWidth();
-        double HEIGHT = graphics.getHeight();
-        double PLAYER_X = WIDTH/2-10;
-        double PLAYER_Y = HEIGHT/2-10;
-
-        Human plr = ClientCommandHandler.getPlayerClient();
-        plr.translateXProperty().addListener( (obs , old , newValue) ->
-            {
-//                int offset = newValue.intValue();
-//                if (offset >  PLAYER_X && offset < WIDTH+200 - plr.getLocation().getX()) {
-//                    plr.setLayoutX(-(offset - plr.getLocation().getX() ));
-//                } else if (offset< PLAYER_X && offset<WIDTH+200 - plr.getLocation().getX()) {
-//                    plr.setLayoutX(-(offset - plr.getLocation().getX() ));
-//                }
-            });
-        plr.translateYProperty().addListener( (obs , old , newValue) ->
-        {
-//            int offset = newValue.intValue();
-//            if (offset >  PLAYER_Y && offset < HEIGHT+200 - plr.getLocation().getY()) {
-//                graphics.setLayoutY(-(offset - plr.getLocation().getY()));
-//            } else if (offset< PLAYER_Y && offset<HEIGHT+200 - plr.getLocation().getY()) {
-//                graphics.setLayoutY(-(offset - plr.getLocation().getY()));
-//            }
-        });
     }
 
     public MainController getMainController() {
         return mainController;
     }
 
-    public Scene getScen() {
+    public Scene getScreen() {
         return scene;
     }
 
@@ -113,11 +85,14 @@ public class MainWindow extends AnchorPane {
             e.printStackTrace();
             System.exit(-1);
         }
-        house_floor = ((MapController) loader.getController()).getHouseFloor();
-        ArrayList<BigWall> a = ((MapController) loader.getController()).getAllWalls();
+
+        MapController mapController = loader.getController();
+
+        house_floor = mapController.getHouseFloor();
+        ArrayList<BigWall> walls = mapController.getAllWalls();
 
         graphics.getChildren().addAll(map);
-        graphics.getChildren().addAll(a);
+        graphics.getChildren().addAll(walls);
         graphics.setStyle("-fx-background-color: green;");
     }
 

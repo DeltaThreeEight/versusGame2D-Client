@@ -1,7 +1,7 @@
 package GUI;
 
 import GUI.Controllers.CreationController;
-import GUI.Controllers.TokenController;
+import Network.Connection.ClientCommandHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
@@ -12,7 +12,7 @@ public class CreationWindow {
     private AnchorPane root;
     private Scene scene;
 
-    public CreationWindow() {
+    public CreationWindow(ClientCommandHandler handler) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/creation.fxml"));
         try {
             root = loader.load();
@@ -20,11 +20,16 @@ public class CreationWindow {
             e.printStackTrace();
             System.exit(-1);
         }
-        ((CreationController) loader.getController()).localize();
+        CreationController controller = loader.getController();
+
+        controller.setHandler(handler);
+        controller.localize();
+
+
         scene = new Scene(root);
     }
 
-    public Scene getScen() {
+    public Scene getScreen() {
         return scene;
     }
 }

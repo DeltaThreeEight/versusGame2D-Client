@@ -3,8 +3,9 @@ package GUI.Controllers;
 import Entities.Human;
 import GUI.CreationWindow;
 import GUI.Main;
-import Server.Command;
-import ServerCon.ClientCommandHandler;
+import Server.Commands.ClientCommand;
+import Network.Connection.ClientCommandHandler;
+import Resources.TextResources;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -14,11 +15,6 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.ListIterator;
-import java.util.ResourceBundle;
 
 public class MainController {
     @FXML
@@ -40,20 +36,11 @@ public class MainController {
     @FXML
     private Button all_prsns;
     @FXML
-    private ListView<String> persons;
+    private ListView<String> personsList;
     @FXML
     private Pane graphics;
     private Stage creationWindow;
-
-    @FXML
-    public void select() {
-        MultipleSelectionModel<String> selectedItems = persons.getSelectionModel();
-        ObservableList<String> persons = selectedItems.getSelectedItems();
-        if (persons.size() == 1) {
-            String name = persons.get(0).replaceAll("\n", "");
-            ClientCommandHandler.dH.executeCommand(new Command("select", name));
-        }
-    }
+    private ClientCommandHandler handler;
 
     public void setSelectedPerson(String text) {
         usr_prsn.setText(text);
@@ -65,19 +52,20 @@ public class MainController {
 
     @FXML
     public void send() {
-        if (!msg.getText().trim().equals("")) {
-            ClientCommandHandler.dH.executeCommand(new Command("chat", msg.getText()));
+        if (msg.getText().trim().length() != 0) {
+            handler.executeCMD(new ClientCommand("chat", msg.getText()));
         }
         msg.clear();
     }
 
     @FXML
-    public void show_all() {
-        ClientCommandHandler.dH.executeCommand(new Command("show_all"));
+    public void showAll() {
+        handler.executeCMD(new ClientCommand("show_all"));
     }
 
-    public void showAllPersons(ArrayList<String> persons) {
+    public void showAllPersons(String[] persons) {
         Scene sc = new Scene(new FlowPane(new ScrollPane(new ListView<>(FXCollections.observableArrayList(persons)))));
+
         Stage allPlrs = new Stage();
         allPlrs.setScene(sc);
         allPlrs.showAndWait();
@@ -87,22 +75,19 @@ public class MainController {
     public void create() {
         if (creationWindow != null)
             return;
+
         creationWindow = new Stage();
+
         creationWindow.setAlwaysOnTop(true);
-        creationWindow.setOnCloseRequest(event -> creationWindow = null);
         creationWindow.setResizable(false);
-        creationWindow.setScene(new CreationWindow().getScen());
+        creationWindow.setOnCloseRequest(event -> creationWindow = null);
+        creationWindow.setScene(new CreationWindow(handler).getScreen());
+
         creationWindow.show();
     }
 
-    public Stage getCreationWindow() {
-        Stage temp = creationWindow;
-        creationWindow = null;
-        return temp;
-    }
-
-    public void setUserPersons(ArrayList<String> persons) {
-        this.persons.setItems(FXCollections.observableArrayList(persons));
+    public void setUserPersons(String[] persons) {
+        personsList.setItems(FXCollections.observableArrayList(persons));
     }
 
     public void addPlayer(Human human) {
@@ -114,44 +99,52 @@ public class MainController {
     }
 
     public void localize() {
-        Main.getMain().getPrimaryStage().setMinHeight(460);
-        Main.getMain().getPrimaryStage().setMinWidth(800);
-        ResourceBundle rb = Main.getMain().getRb();
-        String usrPsrn = rb.getString("def_prsn");
-        usr_prsn.setText(usrPsrn);
-        String sel = rb.getString("btn_sel");
-        btn_sel.setText(sel);
-        String crt = rb.getString("btn_crt");
-        btn_create.setText(crt);
-        String stat = rb.getString("btn_stat");
-        btn_stat.setText(stat);
-        String del = rb.getString("btn_del");
-        btn_del.setText(del);
-        String all = rb.getString("btn_all");
-        all_prsns.setText(all);
-        String send = rb.getString("btn_send");
-        btn_send.setText(send);
+        Main main = handler.getMain();
+
+        main.getPrimaryStage().setMinHeight(460);
+        main.getPrimaryStage().setMinWidth(800);
+
+        TextResources resources = main.getTextResources();
+
+        usr_prsn.setText(resources.DEFAULT_PERSON);
+
+        btn_sel.setText(resources.BTN_SEL);
+        btn_create.setText(resources.BTN_CRT);
+        btn_stat.setText(resources.BTN_STAT);
+        btn_del.setText(resources.BTN_DEL);
+        all_prsns.setText(resources.BTN_ALL);
+        btn_send.setText(resources.BTN_SEND);
+
         graphics.heightProperty().addListener((observable, oldValue, newValue) -> graphics.setClip(new Rectangle(graphics.getWidth(), graphics.getHeight())));
         graphics.widthProperty().addListener((observable, oldValue, newValue) -> graphics.setClip(new Rectangle(graphics.getWidth(), graphics.getHeight())));
+
+    }
+
+    @FXML
+    public void select() {
+        personCommand("select");
     }
 
     @FXML
     public void delete() {
-        MultipleSelectionModel<String> selectedItems = persons.getSelectionModel();
-        ObservableList<String> persons = selectedItems.getSelectedItems();
-        if (persons.size() == 1) {
-            String name = persons.get(0).replaceAll("\n", "");
-            ClientCommandHandler.dH.executeCommand(new Command("remove", name));
-        }
+        personCommand("remove");
     }
 
     @FXML
     public void stats() {
-        MultipleSelectionModel<String> selectedItems = persons.getSelectionModel();
+        personCommand("showstats");
+    }
+
+    private void personCommand(String command) {
+        MultipleSelectionModel<String> selectedItems = personsList.getSelectionModel();
         ObservableList<String> persons = selectedItems.getSelectedItems();
         if (persons.size() == 1) {
             String name = persons.get(0).replaceAll("\n", "");
-            ClientCommandHandler.dH.executeCommand(new Command("showstats", name));
+            handler.executeCMD(new ClientCommand(command, name));
         }
+    }
+
+    public void setHandler(ClientCommandHandler handler) {
+        this.handler = handler;
     }
 }

@@ -12,6 +12,6 @@
    <children>
       <TextField fx:id="token_field" layoutX="24.0" layoutY="57.0" prefHeight="31.0" prefWidth="187.0" promptText="reg token" AnchorPane.bottomAnchor="63.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="31.0" />
       <Label fx:id="token_lbl" layoutX="33.0" layoutY="22.0" prefHeight="21.0" prefWidth="170.0" text="Input Registration Token" AnchorPane.leftAnchor="33.0" AnchorPane.rightAnchor="39.0" AnchorPane.topAnchor="22.0" />
-      <Button fx:id="token_btn" layoutX="24.0" layoutY="105.0" mnemonicParsing="false" onAction="#continReg" prefHeight="31.0" prefWidth="187.0" text="Enter" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="31.0" />
+      <Button fx:id="token_btn" layoutX="24.0" layoutY="105.0" mnemonicParsing="false" onAction="#sendRegistrationToken" prefHeight="31.0" prefWidth="187.0" text="Enter" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="31.0" />
    </children>
 </AnchorPane>

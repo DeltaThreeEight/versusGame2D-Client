@@ -1,6 +1,7 @@
 package GUI;
 
 import GUI.Controllers.LogController;
+import Network.Connection.ClientCommandHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
@@ -11,7 +12,7 @@ public class LoginWindow extends AnchorPane {
     private AnchorPane root;
     private Scene scene;
 
-    public LoginWindow() {
+    public LoginWindow(ClientCommandHandler handler) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/log.fxml"));
         try {
             root = loader.load();
@@ -19,11 +20,14 @@ public class LoginWindow extends AnchorPane {
             e.printStackTrace();
             System.exit(-1);
         }
-        ((LogController) loader.getController()).localize();
+        LogController logController = loader.getController();
+        logController.setHandler(handler);
+        logController.localize();
+
         scene = new Scene(root);
     }
 
-    public Scene getScen() {
+    public Scene getScreen() {
         return scene;
     }
 

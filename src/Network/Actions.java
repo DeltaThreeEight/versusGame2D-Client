@@ -1,0 +1,23 @@
+package Network;
+
+public enum Actions {
+    DESERIALIZE,
+    ALERT,
+    SEND,
+    STATS,
+    TELEPORT,
+    SHOOT,
+    KILLPLAYER,
+    SENDPERSONLIST,
+    SENDALLPERSONS,
+    ADDPLAYER,
+    MOVPLAYER,
+    LOADPLAYERS,
+    RELOAD,
+    ROTARE,
+    LOADPUDDLE,
+    CLOSECONNECTION,
+    DEAUTH,
+    REQUESTTOKEN,
+    REMPLAYER
+}

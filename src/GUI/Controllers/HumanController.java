@@ -16,7 +16,7 @@ public class HumanController {
     @FXML
     private Ellipse body;
 
-    public Rectangle getCol_rec() {
+    public Rectangle getCollisionBox() {
         return col_rec;
     }
 
@@ -28,11 +28,11 @@ public class HumanController {
         return head;
     }
 
-    public Ellipse getLeft_hand() {
+    public Ellipse getLeftHand() {
         return left_hand;
     }
 
-    public Ellipse getRight_hand() {
+    public Ellipse getRightHand() {
         return right_hand;
     }
 }

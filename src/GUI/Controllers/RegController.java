@@ -1,15 +1,14 @@
 package GUI.Controllers;
 
 import GUI.Main;
-import ServerCon.ClientCommandHandler;
-import Server.Command;
+import Server.Commands.ClientCommand;
+import Network.Connection.ClientCommandHandler;
+import Resources.TextResources;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-
-import java.util.ResourceBundle;
 
 
 public class RegController {
@@ -33,54 +32,39 @@ public class RegController {
     private PasswordField pass2;
     @FXML
     private Button cnl_btn;
+    private ClientCommandHandler handler;
+    private Main main;
 
     @FXML
     public void register() {
-        if (login.getText().trim().equals("")) {
-            Main.showAlert("Не введён логин!");
-            return;
-        }
-        if (email.getText().trim().equals("")) {
-            Main.showAlert("Не введена почта");
-            return;
-        }
-        if (!pass.getText().equals(pass2.getText())) {
-            Main.showAlert("Пароли не совпадают!");
-            return;
-        } else if (pass.getText().length() < 6) {
-            Main.showAlert("Минимальная длина пароля - 6 символов!");
-            return;
-        }
-        ClientCommandHandler.dH.sendCMD(new Command("register", login.getText(), email.getText(), pass.getText()));
+        handler.executeCMD(new ClientCommand("register", login.getText(), email.getText(), pass.getText(), pass2.getText()));
+    }
+
+    public void setHandler(ClientCommandHandler handler) {
+        this.handler = handler;
+        this.main = handler.getMain();
     }
 
     public void localize() {
-        ResourceBundle rb = Main.getMain().getRb();
-        String reg = rb.getString("reg_btn");
-        reg_btn.setText(reg);
-        String log = rb.getString("reg_login");
-        login.setPromptText(log);
-        String mail = rb.getString("reg_email");
-        email.setPromptText(mail);
-        String pas = rb.getString("reg_pass2");
-        pass.setPromptText(pas);
-        String pas2 = rb.getString("reg_pass");
-        pass2.setPromptText(pas2);
-        String cnl = rb.getString("cnl_btn");
-        cnl_btn.setText(cnl);
-        String loginl = rb.getString("lbl_login");
-        lbl_login.setText(loginl);
-        String emaill = rb.getString("lbl_email");
-        lbl_email.setText(emaill);
-        String passl = rb.getString("lbl_pass");
-        lbl_pass.setText(passl);
-        String pass2l = rb.getString("lbl_pass2");
-        lbl_pass2.setText(pass2l);
+        TextResources resources = main.getTextResources();
+
+        reg_btn.setText(resources.REG_BTN);
+        cnl_btn.setText(resources.CNL_BTN);
+
+        login.setPromptText(resources.REG_LOGIN);
+        email.setPromptText(resources.REG_EMAIL);
+        pass.setPromptText(resources.REG_PASS);
+        pass2.setPromptText(resources.REG_PASS2);
+
+        lbl_login.setText(resources.LBL_LOGIN);
+        lbl_email.setText(resources.LBL_EMAIL);
+        lbl_pass.setText(resources.LBL_PASS);
+        lbl_pass2.setText(resources.LBL_PASS2);
     }
 
     @FXML
     public void hide() {
-        Main.getMain().getPrimaryStage().setScene(Main.getMain().getPrimaryScene());
-        Main.getMain().getPrimaryStage().setOnCloseRequest(event2 -> System.exit(0));
+        main.getPrimaryStage().setScene(main.getPrimaryScene());
+        main.getPrimaryStage().setOnCloseRequest(event2 -> System.exit(0));
     }
 }

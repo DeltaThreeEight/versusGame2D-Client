@@ -1,9 +1,12 @@
 package GUI;
-import Server.Command;
-import ServerCon.ClientCommandHandler;
-import ServerCon.ClientReciever;
+import GUI.Controllers.MainController;
+import Server.Commands.ClientCommand;
+import Network.Connection.ClientCommandHandler;
+import Network.Connection.ClientReceiver;
+import Resources.TextResources;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -21,12 +24,12 @@ public class Main extends Application {
 
     private Stage primaryStage;
     private Scene primaryScene;
-    private static Main main = null;
     private String host = "127.0.0.1";
-    private int port = 8901;
-    private ResourceBundle rb;
+    private int port = 21326;
+    private TextResources resources;
     private Locale locale;
-    private static String INFORMATION;
+    private ClientCommandHandler handler;
+    private MainController mainController;
 
     public Main(int port, String host) {
         this.port = port;
@@ -44,105 +47,90 @@ public class Main extends Application {
     }
 
     public void start(Stage stages) {
-        this.port = main.port;
-        this.host = main.host;
-        main = this;
         primaryStage = stages;
 
         primaryStage.setTitle("Lab 8");
         primaryStage.setResizable(false);
 
-        primaryStage.setScene(new LangWindow().getScen());
+        primaryStage.setScene(new LangWindow(this).getScreen());
         primaryStage.show();
-
     }
 
     public Stage getPrimaryStage() {
         return primaryStage;
     }
 
-    public void tryConnect() {
-
-        Label connecting = new Label(String.format("Соединение с %s:%s...", host, port));
-
-        Parent root = new FlowPane(connecting);
-        Scene scene = new Scene(root);
-
-        primaryStage.setScene(scene);
-
-        primaryStage.show();
-
-        Socket socket = null;
-
-        try {
-            socket = new Socket(host, port);
-            connecting.setText(String.format("Соединение успешно уставлено с %s:%s", host, port));
-        } catch (Exception e) {
-            connecting.setText(String.format("Не удалось установить соединение с %s:%s", host, port));
-        }
-
-
-        OutputStream out = null;
-        InputStream iStream = null;
-
-        try {
-            out = socket.getOutputStream();
-            iStream = socket.getInputStream();
-        } catch (IOException e) {
-            System.out.println("Невозможно получить поток вывода!");
-            System.exit(-1);
-        }
-
-
-        ObjectOutputStream writer = null;
-        ObjectInputStream inStream = null;
-
-        try {
-            writer = new ObjectOutputStream(out);
-            inStream = new ObjectInputStream(iStream);
-        } catch (IOException e) {
-            System.out.println("Какие-то проблемы на стороне сервера");
-            System.exit(0);
-        }
-
-        ClientReciever clientReciever = new ClientReciever(inStream);
-        clientReciever.start();
-
-        new ClientCommandHandler(writer);
-
-        primaryScene = new SampleWindow().getScen();
-        primaryStage.setScene(primaryScene);
-        primaryStage.show();
-        primaryStage.setOnCloseRequest(event -> {
-            ClientCommandHandler.dH.executeCommand(new Command("exit"));
-            System.exit(0);
-        });
-    }
-
-    public Scene getPrimaryScene() {
-        return primaryScene;
-    }
-
     public static void main(String args[]) {
         try {
-            if (args.length == 1) main = new Main(Integer.parseInt(args[0]));
-                else if (args.length > 1 ) main = new Main(Integer.parseInt(args[0]), args[1]);
-                    else main = new Main();
+            if (args.length == 1)
+                new Main(Integer.parseInt(args[0]));
+            else if (args.length > 1 )
+                new Main(Integer.parseInt(args[0]), args[1]);
+            else
+                new Main();
         } catch (Exception e) {
             System.out.println("Неверно задан порт/хост");
             System.exit(-1);
         }
 
         launch(args);
-
     }
 
-    public ResourceBundle getRb() {
-        return rb;
+    public void tryConnect() {
+        Label connecting = new Label(String.format("Connecting to %s:%s...", host, port));
+
+        try {
+            Parent root = new FlowPane(connecting);
+            Scene scene = new Scene(root);
+
+            primaryStage.setScene(scene);
+            primaryStage.show();
+
+            Socket socket = new Socket(host, port);
+
+            connecting.setText(String.format("Successfully connected to %s:%s", host, port));
+
+            ObjectOutputStream writer = new ObjectOutputStream(socket.getOutputStream());
+            ObjectInputStream reader = new ObjectInputStream(socket.getInputStream());
+
+            handler = new ClientCommandHandler(this, reader, writer);
+
+            Thread receiverThread = new Thread(new ClientReceiver(reader, handler, resources), "Receiver");
+            receiverThread.start();
+
+            primaryScene = new LogRegWindow(handler).getScen();
+            primaryStage.setScene(primaryScene);
+            primaryStage.show();
+
+            primaryStage.setOnCloseRequest(event -> {
+                handler.executeCMD(new ClientCommand("exit"));
+                System.exit(0);
+            });
+        } catch (Exception e) {
+            primaryStage.setResizable(true);
+            primaryStage.setMinHeight(100);
+            primaryStage.setMinWidth(600);
+            primaryStage.setResizable(false);
+
+            connecting.setText(String.format("Unable connect to %s:%s - %s", host, port, e.getMessage()));
+            e.printStackTrace();
+        }
     }
 
-    public static Main getMain() {
-        return main;
+    public Scene getPrimaryScene() {
+        return primaryScene;
+    }
+
+    public MainController getMainController() {
+        return mainController;
+    }
+
+    public TextResources getTextResources() {
+        return resources;
+    }
+
+    public void setMainController(MainController mainController) {
+        this.mainController = mainController;
     }
 
     public void setLocale(String loc) {
@@ -157,45 +145,64 @@ public class Main extends Application {
                 locale = new Locale("ja", "JP");
                 break;
         }
-        rb = ResourceBundle.getBundle("text", locale);
-        INFORMATION = rb.getString("information");
+        try {
+            resources = new TextResources(ResourceBundle.getBundle("text", locale));
+        } catch (Exception e) {
+            Label noResources = new Label("Couldn't find resources file");
+            Scene scene = new Scene(new FlowPane(noResources));
+
+            primaryStage.setScene(scene);
+            primaryStage.setResizable(true);
+            primaryStage.setMinHeight(100);
+            primaryStage.setMinWidth(600);
+            primaryStage.setResizable(false);
+            primaryStage.showAndWait();
+        }
     }
 
-    public static void showAlert(String text) {
+    public void showAlert(String text) {
         Alert dialog = new Alert(Alert.AlertType.INFORMATION);
+
         dialog.initStyle(StageStyle.UTILITY);
-        dialog.setTitle(INFORMATION);
+        dialog.setTitle(resources.INFORMATION);
         dialog.setHeaderText(text);
-        if (text.trim().equals(ClientCommandHandler.AUTH_SUCCESS) ||
-                text.trim().equals(ClientCommandHandler.EMAIL_CONF))
-            showMainScreen();
+
+        if (text.trim().equals(resources.AUTH_SUCCESS) || text.trim().equals(resources.EMAIL_CONF))
+            showMainScreen(handler);
+
         dialog.show();
     }
 
-    private static void showMainScreen() {
-        ClientCommandHandler.mainWindow = new MainWindow();
-        getMain().getPrimaryStage().setScene(ClientCommandHandler.mainWindow.getScen());
-        getMain().getPrimaryStage().setResizable(true);
-        getMain().getPrimaryStage().setOnCloseRequest(event -> {
-            ClientCommandHandler.dH.executeCommand(new Command("deauth"));
+    private void showMainScreen(ClientCommandHandler handler) {
+        MainWindow mainWindow = new MainWindow(handler);
+        handler.setMainWindow(mainWindow);
+
+        primaryStage.setScene(mainWindow.getScreen());
+        primaryStage.setResizable(true);
+
+        primaryStage.setOnCloseRequest(event -> {
+            handler.executeCMD(new ClientCommand("deauth"));
             closeReq();
         });
     }
 
-    public static void closeReq() {
-        getMain().getPrimaryStage().setScene(getMain().getPrimaryScene());
-        getMain().getPrimaryStage().sizeToScene();
-        getMain().getPrimaryStage().setMinWidth(1);
-        getMain().getPrimaryStage().setMinHeight(1);
-        ClientCommandHandler.dH.deauth();
-        getMain().getPrimaryStage().setOnCloseRequest(event1 -> {
-            ClientCommandHandler.dH.executeCommand(new Command("exit"));
+    public void closeReq() {
+        primaryStage.setScene(getPrimaryScene());
+        primaryStage.sizeToScene();
+        primaryStage.setMinWidth(1);
+        primaryStage.setMinHeight(1);
+
+        handler.deauth();
+
+        primaryStage.setOnCloseRequest(event1 -> {
+            handler.executeCMD(new ClientCommand("exit"));
             System.exit(0);
         });
+
         Platform.runLater(() -> {
-            getMain().getPrimaryStage().setMaximized(false);
-            getMain().getPrimaryStage().setResizable(false);
-            getMain().getPrimaryStage().show();
+            primaryStage.setMaximized(false);
+            primaryStage.setResizable(false);
+            primaryStage.show();
         });
     }
 

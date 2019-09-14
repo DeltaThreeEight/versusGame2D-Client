@@ -1,17 +1,18 @@
 package GUI;
 
-import GUI.Controllers.Controller;
+import GUI.Controllers.LogRegController;
+import Network.Connection.ClientCommandHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 
 import java.io.IOException;
 
-public class SampleWindow {
+public class LogRegWindow {
     private Pane root;
     private Scene scene;
 
-    public SampleWindow() {
+    public LogRegWindow(ClientCommandHandler handler) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/sample.fxml"));
         try {
             root = loader.load();
@@ -19,9 +20,11 @@ public class SampleWindow {
             e.printStackTrace();
             System.exit(-1);
         }
-        ((Controller) loader.getController()).localize();
-        scene = new Scene(root);
+        LogRegController controller = loader.getController();
+        controller.setHandler(handler);
+        controller.localize();
 
+        scene = new Scene(root);
     }
 
     public Scene getScen() {

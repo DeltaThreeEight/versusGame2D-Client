@@ -1,6 +1,7 @@
 package GUI;
 
 import GUI.Controllers.LangController;
+import Network.Connection.ClientCommandHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -11,7 +12,7 @@ public class LangWindow extends Pane {
     private Pane root;
     private Scene scene;
 
-    public LangWindow() {
+    public LangWindow(Main main) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/lang.fxml"));
         try {
             root = loader.load();
@@ -19,12 +20,14 @@ public class LangWindow extends Pane {
             e.printStackTrace();
             System.exit(-1);
         }
-        ((LangController) loader.getController()).init();
+        LangController langController = loader.getController();
+        langController.setMain(main);
+        langController.init();
 
         scene = new Scene(root);
     }
 
-    public Scene getScen() {
+    public Scene getScreen() {
         return scene;
     }
 }

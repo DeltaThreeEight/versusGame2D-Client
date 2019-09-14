@@ -2,9 +2,9 @@ package Entities;
 
 import Entities.exceptions.NotAliveException;
 import GUI.Controllers.HumanController;
-import GUI.Main;
-import Server.Command;
-import ServerCon.ClientCommandHandler;
+import GUI.MainWindow;
+import Server.Commands.ClientCommand;
+import Network.Connection.ClientCommandHandler;
 import World.Location;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
@@ -43,15 +43,17 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
     protected Rectangle gun;
     protected Pane root;
 
+    private transient ClientCommandHandler handler;
+
     public Moves getLastMove() {
         return lastMove;
     }
 
-    public Rectangle getCol_rec() {
+    public Rectangle getCollisionBox() {
         return col_rec;
     }
 
-    public void setCol_rec(Rectangle col_rec) {
+    public void setCollisionBox(Rectangle col_rec) {
         this.col_rec = col_rec;
     }
 
@@ -83,6 +85,10 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
         setTranslateX(loc.getX());
     }
 
+    public void setHandler(Object handler) {
+        this.handler = (ClientCommandHandler) handler;
+    }
+
     public void show() {
         show("Spy.fxml");
     }
@@ -101,15 +107,15 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
 
         HumanController humanController = loader.getController();
         body = humanController.getBody();
-        left_hand = humanController.getLeft_hand();
-        right_hand = humanController.getRight_hand();
+        left_hand = humanController.getLeftHand();
+        right_hand = humanController.getRightHand();
         head = humanController.getHead();
 
 
         Label nm = new Label(getName());
         nm.setTextFill(Paint.valueOf("WHITE"));
         setOrientation(Orientation.VERTICAL);
-        setCol_rec(humanController.getCol_rec());
+        setCollisionBox(humanController.getCollisionBox());
         getChildren().addAll(nm, root);
         if (getLastMove() == Moves.FORWARD || getLastMove() == Moves.BACK)
             rotare(true);
@@ -146,7 +152,7 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
 
     public void hide() {
         try {
-            ClientCommandHandler.mainWindow.getMainController().getGraphics().getChildren().removeAll(this);
+            handler.getMainWindow().getMainController().getGraphics().getChildren().removeAll(this);
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
@@ -172,19 +178,6 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
         }
     }
 
-    public static void kill(double x, double y) {
-        Ellipse ell = new Ellipse();
-        ell.setRadiusY(12);
-        ell.setRadiusX(15);
-        ell.setStroke(Paint.valueOf("BLACK"));
-        ell.setFill(Paint.valueOf("#d30000"));
-        ell.setCenterX(x+16);
-        ell.setCenterY(y+35);
-        ClientCommandHandler.mainWindow.getMap().getChildren().addAll(ell);
-        ell.toBack();
-        ClientCommandHandler.mainWindow.getHouseFloor().toBack();
-    }
-
     public void teleportOther(double x, double y) {
         setTranslateX(x);
         setTranslateY(y);
@@ -195,26 +188,26 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
         setTranslateX(x);
         setTranslateY(y);
         loc.setXY(x, y);
-        ClientCommandHandler.dH.executeCommand(new Command("teleport", x+"", y+""));
+        handler.executeCMD(new ClientCommand("teleport", x+"", y+""));
     }
 
     public boolean checkIntersects(Moves move) {
 
-        for (Node n : ClientCommandHandler.mainWindow.getMainController().getGraphics().getChildren()) {
+        for (Node n : handler.getMainWindow().getMainController().getGraphics().getChildren()) {
 
             if (n instanceof Human) {
 
                 Human h = (Human) n;
 
                 if (h != this) {
-                    if (((Path) Shape.intersect(col_rec, h.getCol_rec())).getElements().size() > 0) {
+                    if (((Path) Shape.intersect(col_rec, h.getCollisionBox())).getElements().size() > 0) {
 
                         System.out.println("Касание");
 
                         setTranslateY(getTranslateY() - move.getY() * speedModifier);
                         setTranslateX(getTranslateX() - move.getX() * speedModifier);
 
-                        while (((Path) Shape.intersect(col_rec, h.getCol_rec())).getElements().size() > 0) {
+                        while (((Path) Shape.intersect(col_rec, h.getCollisionBox())).getElements().size() > 0) {
                             teleport(loc.getX() + 5, loc.getY() + 5);
                         }
 
@@ -288,14 +281,14 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
                 if (move == Moves.RIGHT || move == Moves.LEFT) {
                     // do nothing
                 } else {
-                    ClientCommandHandler.dH.executeCommand(new Command("rotare", move.toString()));
+                    handler.executeCMD(new ClientCommand("rotare", move.toString()));
                     rotare(true);
                 }
             } else {
                 if (move == Moves.BACK || move == Moves.FORWARD) {
                     // do nothing
                 } else {
-                    ClientCommandHandler.dH.executeCommand(new Command("rotare", move.toString()));
+                    handler.executeCMD(new ClientCommand("rotare", move.toString()));
                     rotare(false);
                 }
             }
@@ -312,7 +305,7 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
             if (!intersects) {
                 loc.setXY(loc.getX() + move.getX() * speedModifier, loc.getY() + move.getY() * speedModifier);
                 System.out.println("Перемещение " + loc);
-                ClientCommandHandler.dH.executeCommand(new Command("move", move.toString()));
+                handler.executeCMD(new ClientCommand("move", move.toString()));
             }
         } else System.out.println("Перемещние невозможно");
 
@@ -324,7 +317,7 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
 
             System.out.println("SHOOT");
             final Shape bullet = new Circle(2, Color.ORANGE);
-            ClientCommandHandler.mainWindow.getMainController().getGraphics().getChildren().add(bullet);
+            handler.getMainWindow().getMainController().getGraphics().getChildren().add(bullet);
             final TranslateTransition bulletAnimation = new TranslateTransition(Duration.seconds(2), bullet);
 
             int modx = 0;
@@ -351,20 +344,20 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
             bulletAnimation.setToY(getLastMove().getY() * 1000);
 
             bullet.boundsInParentProperty().addListener((observable, oldValue, newValue) -> {
-                Pane fr = ClientCommandHandler.mainWindow.getMainController().getGraphics();
+                Pane fr = handler.getMainWindow().getMainController().getGraphics();
                 for (Node n : fr.getChildren()) {
                     if (n instanceof Human) {
                         Human h = (Human) n;
-                        if (h.getCol_rec() != this.getCol_rec()) {
-                            if (((Path) Shape.intersect(bullet, h.getCol_rec())).getElements().size() > 0) {
+                        if (h.getCollisionBox() != this.getCollisionBox()) {
+                            if (((Path) Shape.intersect(bullet, h.getCollisionBox())).getElements().size() > 0) {
                                 System.out.println("Hit!");
                                 h.setHealth(h.getHealth() - 10);
-                                if (h == ClientCommandHandler.getPlayerClient()) {
+                                if (h == handler.getPlayerClient()) {
                                     double maxHealt = 0;
                                     if (h instanceof Spy)
                                         maxHealt = 100;
                                     else maxHealt = 150;
-                                    ClientCommandHandler.getHpBar().setWidth(56.0 * (((double) h.getHealth()) / maxHealt));
+                                    handler.getHpBar().setWidth(56.0 * (((double) h.getHealth()) / maxHealt));
                                 }
                                 bulletAnimation.stop();
                                 fr.getChildren().remove(bullet);
@@ -385,7 +378,7 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
 
             });
 
-            bulletAnimation.setOnFinished(event -> ClientCommandHandler.mainWindow.getMainController().getGraphics().getChildren().remove(bullet));
+            bulletAnimation.setOnFinished(event -> handler.getMainWindow().getMainController().getGraphics().getChildren().remove(bullet));
             bulletAnimation.play();
         } else {
             System.out.println("Reloading...");
@@ -398,7 +391,7 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
 
     public void reload() {
         ammo = 30;
-        ClientCommandHandler.getAmmo_amount().setText(ammo+"");
+        handler.getAmmoAmount().setText(ammo+"");
     }
 
     public void shootAnim() {
@@ -461,11 +454,14 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
         if (ammo > 0) {
             ammo--;
             shootAnim();
-            ClientCommandHandler.getAmmo_amount().setText(ammo+"");
-            ClientCommandHandler.dH.executeCommand(new Command("shoot"));
+            handler.getAmmoAmount().setText(ammo+"");
+            handler.executeCMD(new ClientCommand("shoot"));
             System.out.println("SHOOT");
             final Shape bullet = new Circle(2, Color.ORANGE);
-            ClientCommandHandler.mainWindow.getMainController().getGraphics().getChildren().add(bullet);
+
+            MainWindow mainWindow = handler.getMainWindow();
+            mainWindow.getMainController().getGraphics().getChildren().add(bullet);
+
             final TranslateTransition bulletAnimation = new TranslateTransition(Duration.seconds(2), bullet);
 
             int modx = 0;
@@ -492,15 +488,15 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
             bulletAnimation.setToY(getLastMove().getY() * 1000);
 
             bullet.boundsInParentProperty().addListener((observable, oldValue, newValue) -> {
-                Pane fr = ClientCommandHandler.mainWindow.getMainController().getGraphics();
+                Pane fr = mainWindow.getMainController().getGraphics();
                 for (Node n : fr.getChildren()) {
                     if (n instanceof Human) {
                         Human h = (Human) n;
-                        if (h.getCol_rec() != this.getCol_rec()) {
-                            if (((Path) Shape.intersect(bullet, h.getCol_rec())).getElements().size() > 0) {
+                        if (h.getCollisionBox() != this.getCollisionBox()) {
+                            if (((Path) Shape.intersect(bullet, h.getCollisionBox())).getElements().size() > 0) {
                                 System.out.println("Hit!");
                                 h.setHealth(h.getHealth() - 10);
-                                ClientCommandHandler.dH.executeCommand(new Command("hit", h.getName()));
+                                handler.executeCMD(new ClientCommand("hit", h.getName()));
                                 bulletAnimation.stop();
                                 fr.getChildren().remove(bullet);
                                 break;
@@ -520,10 +516,11 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
 
             });
 
-            bulletAnimation.setOnFinished(event -> ClientCommandHandler.mainWindow.getMainController().getGraphics().getChildren().remove(bullet));
+            bulletAnimation.setOnFinished(event -> mainWindow.getMainController().getGraphics().getChildren().remove(bullet));
             bulletAnimation.play();
 
         } else {
+            handler.executeCMD(new ClientCommand("shoot"));
             System.out.println("Reloading...");
         }
 
@@ -576,6 +573,8 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
                 Objects.equals(dateOfCreation, human.dateOfCreation) &&
                 Objects.equals(user, human.user);
     }
+
+    public void hit() {}
 
     public LocalDateTime getDate() {
         return dateOfCreation;

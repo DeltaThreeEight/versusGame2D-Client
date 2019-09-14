@@ -2,13 +2,11 @@ package GUI.Controllers;
 
 import Entities.Merc;
 import Entities.Spy;
-import GUI.Main;
-import Server.Command;
-import ServerCon.ClientCommandHandler;
+import Server.Commands.ClientCommand;
+import Network.Connection.ClientCommandHandler;
+import Resources.TextResources;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-
-import java.util.ResourceBundle;
 
 public class CreationController {
     @FXML
@@ -20,35 +18,39 @@ public class CreationController {
     @FXML
     private TextField name;
     private ToggleGroup group;
+    private ClientCommandHandler handler;
 
     @FXML
     public void createPerson() {
         if (name.getText().trim().equals("")) {
-            Main.showAlert("Не введено имя персонажа");
+            handler.getMain().showAlert(handler.getMain().getTextResources().ENTER_PRSN_NAME);
             return;
         }
+
         RadioButton sel = (RadioButton) group.getSelectedToggle();
-        if (sel != null && sel.equals(merc)) {
-            ClientCommandHandler.dH.executeCommand(new Command("createnew", name.getText().trim()));
-            ClientCommandHandler.dH.sendHuman(new Merc(name.getText().trim()));
-        } else if (sel != null) {
-            ClientCommandHandler.dH.executeCommand(new Command("createnew", name.getText().trim()));
-            ClientCommandHandler.dH.sendHuman(new Spy(name.getText().trim()));
-        }
-        if (sel == null)
-            Main.showAlert("Не выбрана сторона");
+
+        if (sel.equals(spy))
+            handler.executeCMD(new ClientCommand("createnew", new Spy(name.getText().trim())));
+        else
+            handler.executeCMD(new ClientCommand("createnew", new Merc(name.getText().trim())));
+    }
+
+    public void setHandler(ClientCommandHandler handler) {
+        this.handler = handler;
     }
 
     public void localize() {
         group = new ToggleGroup();
+
         merc.setToggleGroup(group);
         spy.setToggleGroup(group);
-        ResourceBundle rb = Main.getMain().getRb();
-        String nm = rb.getString("prsn_name");
-        name.setPromptText(nm);
-        String sp = rb.getString("spy");
-        spy.setText(sp);
-        String mrc = rb.getString("merc");
-        merc.setText(mrc);
+        group.selectToggle(spy);
+
+        TextResources resources = handler.getMain().getTextResources();
+
+        name.setPromptText(resources.PRSN_NAME);
+
+        spy.setText(resources.SPY);
+        merc.setText(resources.MERC);
     }
 }
