@@ -105,6 +105,7 @@ public class ClientReceiver implements Runnable {
                     break;
                 case ADDPLAYER:
                     playerJoin(response.getData());
+                    break;
                 case REMPLAYER:
                     playerLeft(response.getData());
                     break;
@@ -202,11 +203,11 @@ public class ClientReceiver implements Runnable {
     }
 
     private void playerJoin(String data) {
-        String key = data.split("\\^")[0];
         Human person = null;
 
         try {
             person = (Human) inputStream.readObject();
+            person.setHandler(handler);
         } catch (Exception i) {
             i.printStackTrace();
         }
@@ -214,7 +215,7 @@ public class ClientReceiver implements Runnable {
         Human human = person;
         addHum(person);
 
-        handler.getJoinedPlayers().put(key, person);
+        handler.getJoinedPlayers().put(human.getName(), person);
 
         if (handler.getIsAuth())
             Platform.runLater( () -> handler.getMainWindow().getMainController().addToChat(String.format(
@@ -227,6 +228,7 @@ public class ClientReceiver implements Runnable {
 
         try {
             person = (Human) inputStream.readObject();
+            person.setHandler(handler);
         } catch (Exception e) {
             e.printStackTrace();
             return;
@@ -367,6 +369,12 @@ public class ClientReceiver implements Runnable {
                 return resources.PERSON_REMOVED;
             case "PERSON_SELECTED":
                 return String.format(resources.PERSON_SELECTED, data.split(" ")[1]);
+            case "USER_ALREADY_AUTH":
+                return resources.USER_ALREADY_AUTH;
+            case "PERSON_ALREADY_SELECTED":
+                return resources.PERSON_ALREADY_SELECTED;
+            case "SAME_NAME":
+                return resources.SAME_NAME;
             default:
                 return data;
         }

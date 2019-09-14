@@ -39,6 +39,7 @@ public class MainController {
     private ListView<String> personsList;
     @FXML
     private Pane graphics;
+
     private Stage creationWindow;
     private ClientCommandHandler handler;
 

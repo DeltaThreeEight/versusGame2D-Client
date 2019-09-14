@@ -192,7 +192,6 @@ public abstract class Human extends FlowPane implements Moveable, Comparable<Hum
     }
 
     public boolean checkIntersects(Moves move) {
-
         for (Node n : handler.getMainWindow().getMainController().getGraphics().getChildren()) {
 
             if (n instanceof Human) {

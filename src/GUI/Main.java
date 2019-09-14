@@ -177,6 +177,8 @@ public class Main extends Application {
         MainWindow mainWindow = new MainWindow(handler);
         handler.setMainWindow(mainWindow);
 
+        handler.setIsAuth(true);
+
         primaryStage.setScene(mainWindow.getScreen());
         primaryStage.setResizable(true);
 
