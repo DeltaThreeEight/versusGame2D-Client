@@ -1,7 +1,7 @@
 # versusGame2D-Client
-Клиенсткая часть простого многопользовательского 2D шутера. Для работы требуется JavaFX.
+Client part of simple multiplayer 2D game. JavaFX is required.
 
-Скриншоты:
+Screenshots:
 
 ![alt text](https://github.com/DeltaThreeEight/versusGame2D-Client/blob/master/images/1.png?raw=true)
 
